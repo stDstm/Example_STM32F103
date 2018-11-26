@@ -1,0 +1,4 @@
+main.c:83:6:HAL_TIM_PeriodElapsedCallback	0	static
+main.c:144:6:SystemClock_Config	72	static
+main.c:97:5:main	48	static
+main.c:257:6:Error_Handler	0	static
