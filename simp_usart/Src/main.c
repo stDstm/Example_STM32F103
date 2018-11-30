@@ -73,7 +73,7 @@ UART_HandleTypeDef huart1;
 
 uint8_t rec;
 uint8_t receiveBuffer[BUFSIZE] = {0,};
-int i = -1;
+volatile int i = -1;
 
 /* USER CODE END PV */
 
