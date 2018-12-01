@@ -98,7 +98,7 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart) // колбек, выз�
 	{
 		i++;
 		receiveBuffer[i] = rec; // складываем принятые байты в массив
-
+		
 		if(rec == '\n' || i > BUFSIZE - 3) // проверяем пришёл ли "символ новой строки" и подстраховываемся от переполнения массива
 		{
 			i++;
@@ -124,8 +124,8 @@ int main(void)
 {
   /* USER CODE BEGIN 1 */
 
-	char trans_str[TRANSIZE] = {0,};
-	int i = 0;
+  char trans_str[TRANSIZE] = {0,};
+  int i = 0;
 
   /* USER CODE END 1 */
 
