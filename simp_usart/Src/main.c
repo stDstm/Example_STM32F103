@@ -159,6 +159,7 @@ int main(void)
 	  snprintf(trans_str, TRANSIZE - 1, "Wait... %d Reciv - %s\n", i, receiveBuffer); // собираем строку для отправки
 	  HAL_UART_Transmit(&huart1, (uint8_t*)trans_str, strlen(trans_str), 1000);
 	  //HAL_UART_Transmit(&huart1, (uint8_t*)receiveBuffer, strlen((char*)receiveBuffer), 1000);
+	  HAL_UART_Receive_IT(&huart1, &rec, 1);
 	  HAL_Delay(1000);
   }
   /* USER CODE END 3 */
