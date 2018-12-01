@@ -73,7 +73,10 @@ UART_HandleTypeDef huart1;
 
 uint8_t rec;
 uint8_t receiveBuffer[BUFSIZE] = {0,};
+char uart1_str[TRANSIZE] = {0,};
 volatile int i = -1;
+volatile int count = 0;
+volatile uint8_t rec_flag = 0;
 
 /* USER CODE END PV */
 
@@ -88,6 +91,7 @@ static void MX_USART1_UART_Init(void);
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 
+
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart) // колбек, вызываемый прерыванием от приёму от уарта
 {
 	if(huart == &huart1) // если задействован только один УАРТ, то это условие можно убрать
@@ -95,12 +99,15 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart) // колбек, выз�
 		i++;
 		receiveBuffer[i] = rec; // складываем принятые байты в массив
 
-		if(rec == '\n' || i > BUFSIZE - 2) // проверяем пришёл ли "перенос строки" и подстраховываемся от переполнения массива
+		if(rec == '\n' || i > BUFSIZE - 3) // проверяем пришёл ли "символ новой строки" и подстраховываемся от переполнения массива
 		{
-			//HAL_UART_Transmit(&huart1, (uint8_t*)receiveBuffer, i + 1, 1000);
 			i++;
 			receiveBuffer[i] = 0; // зануляем конец строки (массива)
+			//snprintf(uart1_str, TRANSIZE - 1, "%d UART1 %d - %s\n", count++, i, receiveBuffer);
+			//HAL_UART_Transmit(&huart1, (uint8_t*)uart1_str, strlen(uart1_str), 1000);
+			rec_flag = 1;
 			i = -1;
+			HAL_GPIO_TogglePin(pa3_GPIO_Port, pa3_Pin);
 		}
 
 		HAL_UART_Receive_IT(&huart1, &rec, 1); // инициируем прерывание по приёму байта
@@ -155,12 +162,14 @@ int main(void)
 
     /* USER CODE BEGIN 3 */
 
-	  i++; // просто счётчик (для красоты)
-	  snprintf(trans_str, TRANSIZE - 1, "Wait... %d Reciv - %s\n", i, receiveBuffer); // собираем строку для отправки
-	  HAL_UART_Transmit(&huart1, (uint8_t*)trans_str, strlen(trans_str), 1000);
-	  //HAL_UART_Transmit(&huart1, (uint8_t*)receiveBuffer, strlen((char*)receiveBuffer), 1000);
-	  HAL_UART_Receive_IT(&huart1, &rec, 1);
-	  HAL_Delay(1000);
+	  if(rec_flag == 1)
+	  {
+		  int l = strlen((char*)receiveBuffer);
+		  snprintf(trans_str, TRANSIZE - 1, "Wait %d Reciv %d - %s\n", i++, l, receiveBuffer); // собираем строку для отправки
+		  HAL_UART_Transmit(&huart1, (uint8_t*)trans_str, strlen(trans_str), 1000);
+		  rec_flag = 0;
+		  HAL_UART_Receive_IT(&huart1, &rec, 1);
+	  }
   }
   /* USER CODE END 3 */
 }
@@ -242,10 +251,32 @@ static void MX_USART1_UART_Init(void)
   */
 static void MX_GPIO_Init(void)
 {
+  GPIO_InitTypeDef GPIO_InitStruct = {0};
 
   /* GPIO Ports Clock Enable */
+  __HAL_RCC_GPIOC_CLK_ENABLE();
   __HAL_RCC_GPIOD_CLK_ENABLE();
   __HAL_RCC_GPIOA_CLK_ENABLE();
+
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(led13_GPIO_Port, led13_Pin, GPIO_PIN_SET);
+
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(pa3_GPIO_Port, pa3_Pin, GPIO_PIN_RESET);
+
+  /*Configure GPIO pin : led13_Pin */
+  GPIO_InitStruct.Pin = led13_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(led13_GPIO_Port, &GPIO_InitStruct);
+
+  /*Configure GPIO pin : pa3_Pin */
+  GPIO_InitStruct.Pin = pa3_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(pa3_GPIO_Port, &GPIO_InitStruct);
 
 }
 
