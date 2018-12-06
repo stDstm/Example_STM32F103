@@ -110,7 +110,7 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart) // колбек, выз�
 			HAL_GPIO_TogglePin(pa3_GPIO_Port, pa3_Pin);
 		}
 
-		HAL_UART_Receive_IT(&huart1, &rec, 1); // инициируем прерывание по приёму байта
+		if(!rec_flag) HAL_UART_Receive_IT(&huart1, &rec, 1); // инициируем прерывание по приёму байта
 	}
 }
 
