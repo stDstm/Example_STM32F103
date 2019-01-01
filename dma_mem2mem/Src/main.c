@@ -53,7 +53,7 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-#define BUFFSIZE 17
+#define BUFFSIZE 20
 
 #define    DWT_CYCCNT    *(volatile unsigned long *)0xE0001004
 #define    DWT_CONTROL   *(volatile unsigned long *)0xE0001000
@@ -90,16 +90,33 @@ static void MX_USART1_UART_Init(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-void dma1_ch1_m2m_callback(DMA_HandleTypeDef *hdma_memtomem_dma1_channel1)
+
+
+void dma1_ch1_m2m_callback(DMA_HandleTypeDef *hdma_memtomem_dma1_channel1) // колбек по окончанию копирования через DMA
 {
 	count_tic = DWT_CYCCNT;
-	snprintf(trans_str, 31, "Copy_DMA %lu tiks\n", count_tic);
-	HAL_UART_Transmit(&huart1, (uint8_t*)&trans_str, strlen(trans_str), 1000);
-
-	HAL_UART_Transmit(&huart1, (uint8_t*)"\n<After copying>\n", 17, 1000);
+	snprintf(trans_str, 63, "copydma %lu takt\n", count_tic);
+	HAL_UART_Transmit(&huart1, (uint8_t*)trans_str, strlen(trans_str), 1000);
 	HAL_UART_Transmit(&huart1, (uint8_t*)"dst_buff=", 9, 1000);
-    HAL_UART_Transmit(&huart1, (uint8_t*)&dst_buff, BUFFSIZE, 1000);
+	HAL_UART_Transmit(&huart1, dst_buff, (uint16_t)strlen((const char *)dst_buff), 1000);
 	HAL_UART_Transmit(&huart1, (uint8_t*)"---------\n", 10, 1000);
+}
+
+
+void copy_mem_to_mem8(uint8_t *src_buff, uint8_t *dst_buff, int len)
+{
+  for(int i = 0; i < len; i++)
+  {
+	  src_buff[i] = dst_buff[i];
+  }
+}
+
+void copy_mem_to_mem32(uint32_t *src_buff, uint32_t *dst_buff, int len)
+{
+  for(int i = 0; i < len; i++)
+  {
+	  src_buff[i] = dst_buff[i];
+  }
 }
 
 /* USER CODE END 0 */
@@ -136,31 +153,68 @@ int main(void)
   MX_USART1_UART_Init();
   /* USER CODE BEGIN 2 */
 
+  // регистрация колбека по окончанию копирования через DMA
   if(HAL_DMA_RegisterCallback(&hdma_memtomem_dma1_channel1, HAL_DMA_XFER_CPLT_CB_ID, dma1_ch1_m2m_callback) != HAL_OK)
   {
       Error_Handler();
   }
 
-
-  SCB_DEMCR |= CoreDebug_DEMCR_TRCENA_Msk;// разрешаем использовать DWT
-  DWT_CYCCNT = 0;// обнуляем значение
-  DWT_CONTROL|= DWT_CTRL_CYCCNTENA_Msk; // включаем счётчик
-
   memcpy(src_buff, "istarik.ru stm32\n", BUFFSIZE);
-  count_tic = DWT_CYCCNT;
-  snprintf(trans_str, 31, "Memcpy %lu tiks\n\n", count_tic);
-  HAL_UART_Transmit(&huart1, (uint8_t*)&trans_str, strlen(trans_str), 1000);
-
-  HAL_UART_Transmit(&huart1, (uint8_t*)"<Before copying>\n", 17, 1000);
   HAL_UART_Transmit(&huart1, (uint8_t*)"src_buff=", 9, 1000);
-  HAL_UART_Transmit(&huart1, (uint8_t*)&src_buff, BUFFSIZE, 1000);
+  HAL_UART_Transmit(&huart1, src_buff, (uint16_t)strlen((const char *)src_buff), 1000);
+  HAL_UART_Transmit(&huart1, (uint8_t*)"\n", 1, 1000);
 
-  HAL_UART_Transmit(&huart1, (uint8_t*)"dst_buff=", 9, 1000);
-  HAL_UART_Transmit(&huart1, (uint8_t*)&dst_buff, BUFFSIZE, 1000);
-  HAL_UART_Transmit(&huart1, (uint8_t*)"\n\n", 2, 1000);
+    ///////////////////////////////////////////////////////////////////////////////////////////
+    // измерение скорости копирования (memcpy, вручную, через DMA)
+    count_tic = 0;
+    SCB_DEMCR |= CoreDebug_DEMCR_TRCENA_Msk;// разрешаем использовать DWT
+    DWT_CYCCNT = 0;// обнуляем значение
+    DWT_CONTROL|= DWT_CTRL_CYCCNTENA_Msk; // включаем счётчик
 
-  DWT_CYCCNT = 0;
-  HAL_DMA_Start_IT(&hdma_memtomem_dma1_channel1, (uint32_t)&src_buff, (uint32_t)&dst_buff, BUFFSIZE);
+
+    memcpy(dst_buff, src_buff, BUFFSIZE);
+    count_tic = DWT_CYCCNT; // кол-во тактов
+    snprintf(trans_str, 63, "memcpy8 %lu takt\n", count_tic);
+    HAL_UART_Transmit(&huart1, (uint8_t*)trans_str, strlen(trans_str), 1000);
+
+    HAL_UART_Transmit(&huart1, (uint8_t*)"dst_buff=", 9, 1000);
+    HAL_UART_Transmit(&huart1, dst_buff, (uint16_t)strlen((const char *)dst_buff), 1000);
+    HAL_UART_Transmit(&huart1, (uint8_t*)"\n", 1, 1000);
+    memset(dst_buff, 0, BUFFSIZE);
+
+
+    count_tic = 0;
+    DWT_CYCCNT = 0;
+    copy_mem_to_mem8(dst_buff, src_buff, BUFFSIZE);
+    count_tic = DWT_CYCCNT; // кол-во тактов
+    snprintf(trans_str, 63, "copy_mem8 %lu takt\n", count_tic);
+    HAL_UART_Transmit(&huart1, (uint8_t*)trans_str, strlen(trans_str), 1000);
+
+    HAL_UART_Transmit(&huart1, (uint8_t*)"dst_buff=", 9, 1000);
+    HAL_UART_Transmit(&huart1, dst_buff, (uint16_t)strlen((const char *)dst_buff), 1000);
+    HAL_UART_Transmit(&huart1, (uint8_t*)"\n", 1, 1000);
+    memset(dst_buff, 0, BUFFSIZE);
+
+
+    count_tic = 0;
+    DWT_CYCCNT = 0;
+    copy_mem_to_mem32((uint32_t*)dst_buff, (uint32_t*)src_buff, BUFFSIZE / 4);
+    count_tic = DWT_CYCCNT; // кол-во тактов
+    snprintf(trans_str, 63, "copy_mem32 %lu takt\n", count_tic);
+    HAL_UART_Transmit(&huart1, (uint8_t*)trans_str, strlen(trans_str), 1000);
+
+    HAL_UART_Transmit(&huart1, (uint8_t*)"dst_buff=", 9, 1000);
+    HAL_UART_Transmit(&huart1, dst_buff, (uint16_t)strlen((const char *)dst_buff), 1000);
+    HAL_UART_Transmit(&huart1, (uint8_t*)"\n", 1, 1000);
+    memset(dst_buff, 0, BUFFSIZE);
+
+
+    count_tic = 0;
+    DWT_CYCCNT = 0;
+    ///////////////////////////////////////////////////////////////////////////////////////////
+
+  // копирование через DMA
+  HAL_DMA_Start_IT(&hdma_memtomem_dma1_channel1, (uint32_t)src_buff, (uint32_t)dst_buff, BUFFSIZE);
 
   /* USER CODE END 2 */
 
