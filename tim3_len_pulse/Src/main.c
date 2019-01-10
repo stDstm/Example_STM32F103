@@ -123,10 +123,10 @@ void HAL_TIM_IC_CaptureCallback(TIM_HandleTypeDef *htim)
 
 	if(htim->Instance == TIM4) //  period (one channel)
 	{
-		if(htim->Channel == HAL_TIM_ACTIVE_CHANNEL_1) // RISING с LOW на HIGH
+		if(htim->Channel == HAL_TIM_ACTIVE_CHANNEL_1) 
 		{
 			__HAL_TIM_SET_COUNTER(&htim4, 0x0000);
-			faling_val = HAL_TIM_ReadCapturedValue(&htim4, TIM_CHANNEL_1); // Get FALLING Capture value
+			faling_val = HAL_TIM_ReadCapturedValue(&htim4, TIM_CHANNEL_1); 
 			snprintf(trans_str, 19, "Per1ch %lu\n", faling_val);
 			HAL_UART_Transmit(&huart1, (uint8_t*)trans_str, strlen(trans_str), 1000);
 		}
