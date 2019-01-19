@@ -1,0 +1,4 @@
+main.c:89:6:HAL_TIM_IC_CaptureCallback	8	static
+main.c:165:6:SystemClock_Config	72	static
+main.c:116:5:main	64	static
+main.c:366:6:Error_Handler	0	static
