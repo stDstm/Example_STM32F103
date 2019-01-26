@@ -41,15 +41,12 @@
 #include "stm32f1xx_hal.h"
 
 /* USER CODE BEGIN Includes */
-#include <string.h>
-
+#include "string.h"
 /* USER CODE END Includes */
 
 /* Private variables ---------------------------------------------------------*/
 I2C_HandleTypeDef hi2c1;
-
 UART_HandleTypeDef huart1;
-
 /* USER CODE BEGIN PV */
 /* Private variables ---------------------------------------------------------*/
 
@@ -67,7 +64,24 @@ static void MX_I2C1_Init(void);
 /* USER CODE END PFP */
 
 /* USER CODE BEGIN 0 */
+void I2C_Scan()
+{
+    char info[] = "Scanning I2C bus...\n";
+    HAL_UART_Transmit(&huart1, (uint8_t*)info, strlen(info), HAL_MAX_DELAY);
 
+    for(uint16_t i = 0; i < 128; i++)
+    {
+        if(HAL_I2C_IsDeviceReady(&hi2c1, i << 1, 1, 10) == HAL_OK)
+        {
+        	char msg[64];
+            snprintf(msg, sizeof(msg), "0x%02X", i);
+            HAL_UART_Transmit(&huart1, (uint8_t*)msg, strlen(msg), HAL_MAX_DELAY);
+        }
+        else HAL_UART_Transmit(&huart1, (uint8_t*)".", 1, HAL_MAX_DELAY);
+    }
+
+    HAL_UART_Transmit(&huart1, (uint8_t*)"\n", 1, HAL_MAX_DELAY);
+}
 /* USER CODE END 0 */
 
 /**
@@ -102,24 +116,6 @@ int main(void)
   MX_USART1_UART_Init();
   MX_I2C1_Init();
   /* USER CODE BEGIN 2 */
-  void I2C_Scan()
-  {
-      char info[] = "Scanning I2C bus...\n";
-      HAL_UART_Transmit(&huart1, (uint8_t*)info, strlen(info), HAL_MAX_DELAY);
-
-      for(uint16_t i = 0; i < 128; i++)
-      {
-          if(HAL_I2C_IsDeviceReady(&hi2c1, i << 1, 1, 10) == HAL_OK)
-          {
-        	  char msg[64];
-              snprintf(msg, sizeof(msg), "0x%02X", i);
-              HAL_UART_Transmit(&huart1, (uint8_t*)msg, strlen(msg), HAL_MAX_DELAY);
-          }
-          else HAL_UART_Transmit(&huart1, (uint8_t*)".", 1, HAL_MAX_DELAY);
-      }
-
-      HAL_UART_Transmit(&huart1, (uint8_t*)"\n", 1, HAL_MAX_DELAY);
-  }
 
   /* USER CODE END 2 */
 
