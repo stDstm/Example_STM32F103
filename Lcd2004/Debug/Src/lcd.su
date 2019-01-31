@@ -1,0 +1,8 @@
+lcd.c:15:6:LCD_WriteByteI2CLCD	16	static
+lcd.c:21:6:sendhalfbyte	16	static
+lcd.c:31:6:sendbyte	8	static
+lcd.c:41:6:LCD_Clear	8	static
+lcd.c:47:6:LCD_SendChar	0	static
+lcd.c:52:6:LCD_String	16	static
+lcd.c:62:6:LCD_SetPos	8	static
+lcd.c:85:6:LCD_ini	8	static
