@@ -112,13 +112,13 @@ int main(void)
   MX_TIM2_Init();
   /* USER CODE BEGIN 2 */
 
-  HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_2);
-  HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_4);
+  HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_2); // PA1
+  HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_4); // PA3
 
   TIM2->CCR2 = 32000;
 
-  volatile int i = 0;
-  volatile int j = 0;
+  uint16_t i = 0;
+  volatile uint16_t j = 0;
 
   /* USER CODE END 2 */
 
@@ -130,16 +130,17 @@ int main(void)
 
     /* USER CODE BEGIN 3 */
 	  for(i = 0; i <= 65353 ; i++)
-	  	  	  {
-	  	  	  	TIM2->CCR4 = i;
-	  	  	  	for(j = 0 ; j < 100; j++) __NOP();
-	  	  	  }
-
-	  	  	  for(i = 65535; i >= 0 ; i--)
-	  	  	  {
-	  	  	  	TIM2->CCR4 = i;
-	  	  	  	for(j = 0 ; j < 100; j++) __NOP();
-	  	  	  }
+	  {
+		  TIM2->CCR4 = i;
+		  for(j = 0 ; j < 100; j++) __NOP();
+	  }
+	  HAL_Delay(500);
+	  for(i = 65535; i > 0 ; i--)
+	  {
+		  TIM2->CCR4 = i;
+		  for(j = 0 ; j < 100; j++) __NOP();
+	  }
+	  HAL_Delay(500);
   }
   /* USER CODE END 3 */
 }
