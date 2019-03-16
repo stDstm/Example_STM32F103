@@ -120,7 +120,7 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-	  HAL_Delay(595); // двигая это значение, и кол-во считываемых байт, можно посмотреть с какой скоростью вычитывается буфер (read_buff)
+	  HAL_Delay(595); 
 
 	  myuBUF_t new_dat = (myuBUF_t)index_w - (myuBUF_t)index_r; // кол-во новых байт в буфере
 
