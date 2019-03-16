@@ -1,5 +1,6 @@
-main.c:48:9:GetByte	0	static
-main.c:287:5:_write	8	static
-main.c:301:6:Error_Handler	0	static
-main.c:193:6:SystemClock_Config	72	static
-main.c:67:5:main	432	static
+main.c:55:6:HAL_TIM_PeriodElapsedCallback	0	static
+main.c:66:9:GetByte	0	static
+main.c:387:5:_write	8	static
+main.c:401:6:Error_Handler	0	static
+main.c:214:6:SystemClock_Config	72	static
+main.c:85:5:main	432	static

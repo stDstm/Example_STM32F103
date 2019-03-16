@@ -14,6 +14,8 @@
 
 Получение данных в файле - stm32f1xx_it.c, размер буфера и объявленый тип (myuBUF_t) в файле - main.h, остальное в main.c
 
+USART_2 шлёт данные в USART_1. Соединить PA2 (TX USART_2) и PA10 (RX USART_1), PA9 в компьютер.
+
 https://www.youtube.com/watch?v=cr-loO8-ZUI&list=PLLQhBXxhLvcSmI_AfLWNUITL--WOjLFEM&index=15&t=0s
 
 
