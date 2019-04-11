@@ -8,24 +8,38 @@
 #include "stm32f1xx_hal.h"
 #include "lcd.h"
 
-uint8_t buf[1] = {0};
+#define DWT_CONTROL *(volatile unsigned long *)0xE0001000
+#define SCB_DEMCR *(volatile unsigned long *)0xE000EDFC
+
 extern I2C_HandleTypeDef hi2c1;
 uint8_t control = 0; // команда управления
 
+void DWT_Init(void)
+{
+    SCB_DEMCR |= CoreDebug_DEMCR_TRCENA_Msk; // разрешаем использовать счётчик
+	DWT_CONTROL |= DWT_CTRL_CYCCNTENA_Msk;   // запускаем счётчик
+}
+
+void delay_us(uint32_t us)
+{
+    uint32_t us_count_tic =  us * (SystemCoreClock / 1000000);
+    DWT->CYCCNT = 0U; // обнуляем счётчик
+    while(DWT->CYCCNT < us_count_tic);
+}
+
 void LCD_WriteByteI2CLCD(uint8_t bt)
 {
-	buf[0] = bt;
-	HAL_I2C_Master_Transmit(&hi2c1, (uint16_t)LCD_ADDR, buf, 1, 1000);
+	HAL_I2C_Master_Transmit(&hi2c1, (uint16_t)LCD_ADDR, &bt, 1, 1000);
 }
 
 void sendhalfbyte(uint8_t c)
 {
 	c <<= 4;
 	E_high(); // установка линии Е в 1
-	HAL_Delay(1);
+	delay_us(50);
 	LCD_WriteByteI2CLCD(control | c);
 	E_low(); // установка линии Е в 0
-	HAL_Delay(1);
+	delay_us(50);
 }
 
 void sendbyte(uint8_t c, uint8_t RS)

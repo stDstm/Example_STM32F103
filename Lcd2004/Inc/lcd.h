@@ -18,6 +18,7 @@
 #define led_off()   LCD_WriteByteI2CLCD(control &= ~0x08) //включение подсветки
 #define RW_low() LCD_WriteByteI2CLCD(control &= ~0x02) // RW ставим в ноль (запись в дисплей)
 
+void DWT_Init(void);
 void LCD_ini(void);
 void LCD_Clear(void);
 void LCD_SendChar(char ch);
