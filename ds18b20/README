@@ -17,6 +17,6 @@ User Label - DSpin
 -------------------------------------------------------
 
 
-![](https://github.com/stDstm/Example_STM32F103/tree/master/ds18b20/cubemx.png)
+![](https://github.com/stDstm/Example_STM32F103/blob/master/ds18b20/cubemx.png)
 
  
