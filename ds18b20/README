@@ -2,6 +2,8 @@
 
 В CubeMX настроить любой пин как GPIO_Output и назвать его DSpin
 
+-------------------------------------------------------
+
 GPIO Output Level - Low
 
 GPIO mode - Output Open Drain
@@ -12,7 +14,7 @@ Maximum output speed - High
 
 User Label - DSpin
 
-
+-------------------------------------------------------
 
 
 
