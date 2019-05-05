@@ -1,0 +1,454 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+  <title>ESP to STM32</title>
+  <link rel="stylesheet" href="style.css" type="text/css" media="screen" />
+  <script type="text/javascript" src="jquery.js"></script>
+
+	<script>
+	$(document).ready(function(){ 
+			      
+			  function send_to_stm(cod_comand){ 
+				  
+				  $('.recres').html("Wait...");
+				  $.ajax({
+				  type: "GET", 
+				  url: '/' + cod_comand,
+				  timeout: 59000,           
+
+				  success: function(data){
+					  
+					  $('.recres').html(data);
+
+					},
+					error: function(XMLHttpRequest, textStatus, errorThrown)
+					{
+						if(textStatus == "error") 
+						{   
+						  $('.recres').html("Status error");
+						}	
+					
+						if(textStatus == "timeout") 
+						{   
+						  $('.recres').html("Status timeout");
+						} 
+					}
+				  }); 
+			   }	  
+				  
+
+    $('.enter_boot').click(function(){ var cod_comand = 'enter_boot'; send_to_stm(cod_comand);});
+    $('.write').click(function(){ var cod_comand = 'write'; send_to_stm(cod_comand);});
+	$('.reset').click(function(){ var cod_comand = 'reset'; send_to_stm(cod_comand);});
+	$('.on_boot').click(function(){ var cod_comand = 'on_boot'; send_to_stm(cod_comand);});
+	$('.off_boot').click(function(){ var cod_comand = 'off_boot'; send_to_stm(cod_comand);});
+	$('.event').click(function(){ var cod_comand = 'event'; send_to_stm(cod_comand);});
+	
+
+
+	}); /* КОНЕЦ document.ready */
+	</script>
+
+    <script>
+      function createFileUploader(element, tree, editor){
+        var xmlHttp;
+        var input = document.createElement("input");
+        input.type = "file";
+        input.multiple = false;
+        input.name = "data";
+        document.getElementById(element).appendChild(input);
+        var path = document.createElement("input");
+        path.id = "upload-path";
+        path.type = "text";
+        path.name = "path";
+        path.defaultValue = "/";
+        document.getElementById(element).appendChild(path);
+        var button = document.createElement("button");
+        button.innerHTML = 'Upload';
+        document.getElementById(element).appendChild(button);
+ 
+   
+  
+        function httpPostProcessRequest(){
+          if (xmlHttp.readyState == 4){
+            if(xmlHttp.status != 200) alert("ERROR["+xmlHttp.status+"]: "+xmlHttp.responseText);
+            else {
+              tree.refreshPath(path.value);
+            }
+          }
+        }
+        function createPath(p){
+          xmlHttp = new XMLHttpRequest();
+          xmlHttp.onreadystatechange = httpPostProcessRequest;
+          var formData = new FormData();
+          formData.append("path", p);
+          xmlHttp.open("PUT", "/edit");
+          xmlHttp.send(formData);
+        }
+        
+        button.onclick = function(e){
+          if(input.files.length === 0){
+            return;
+          }
+          xmlHttp = new XMLHttpRequest();
+          xmlHttp.onreadystatechange = httpPostProcessRequest;
+          var formData = new FormData();
+          formData.append("data", input.files[0], path.value);
+          xmlHttp.open("POST", "/edit");
+          xmlHttp.send(formData);
+        }
+        input.onchange = function(e){
+          if(input.files.length === 0) return;
+          var filename = input.files[0].name;
+          var ext = /(?:\.([^.]+))?$/.exec(filename)[1];
+          var name = /(.*)\.[^.]+$/.exec(filename)[1];
+          if(typeof name !== undefined){
+            //if(name.length > 8) name = name.substring(0, 8);
+            filename = name;
+          }
+          if(typeof ext !== undefined){
+            //if(ext === "html") ext = "htm";
+            //else if(ext === "jpeg") ext = "jpg";
+            filename = filename + "." + ext;
+          }
+          if(path.value === "/" || path.value.lastIndexOf("/") === 0){
+            path.value = "/"+filename;
+          } else {
+            path.value = path.value.substring(0, path.value.lastIndexOf("/")+1)+filename;
+          }
+        }
+      }
+
+      function createTree(element, editor){
+
+        var treeRoot = document.createElement("div");
+        treeRoot.className = "css-treeview";
+        document.getElementById(element).appendChild(treeRoot);
+  
+        function loadDownload(path){
+          document.getElementById('download-frame').src = path+"?download=true";
+        }
+  
+        function fillFolderMenu(el, path){
+          var list = document.createElement("ul");
+          el.appendChild(list);
+          var action = document.createElement("li");
+          list.appendChild(action);
+          var isChecked = document.getElementById(path).checked;
+          var expnd = document.createElement("li");
+          list.appendChild(expnd);
+          if(isChecked){
+            expnd.innerHTML = "<span>Collapse</span>";
+            expnd.onclick = function(e){
+              document.getElementById(path).checked = false;
+              if(document.body.getElementsByClassName('contextMenu').length > 0) document.body.removeChild(el);
+            };
+            var refrsh = document.createElement("li");
+            list.appendChild(refrsh);
+            refrsh.innerHTML = "<span>Refresh</span>";
+            refrsh.onclick = function(e){
+              var leaf = document.getElementById(path).parentNode;
+              if(leaf.childNodes.length == 3) leaf.removeChild(leaf.childNodes[2]);
+              httpGet(leaf, path);
+              if(document.body.getElementsByClassName('contextMenu').length > 0) document.body.removeChild(el);
+            };
+          } else {
+            expnd.innerHTML = "<span>Expand</span>";
+            expnd.onclick = function(e){
+              document.getElementById(path).checked = true;
+              var leaf = document.getElementById(path).parentNode;
+              if(leaf.childNodes.length == 3) leaf.removeChild(leaf.childNodes[2]);
+              httpGet(leaf, path);
+              if(document.body.getElementsByClassName('contextMenu').length > 0) document.body.removeChild(el);
+            };
+          }
+          var upload = document.createElement("li");
+          list.appendChild(upload);
+          upload.innerHTML = "<span>Upload</span>";
+          upload.onclick = function(e){
+            var pathEl = document.getElementById("upload-path");
+            if(pathEl){
+              var subPath = pathEl.value;
+              if(subPath.lastIndexOf("/") < 1) pathEl.value = path+subPath;
+              else pathEl.value = path.substring(subPath.lastIndexOf("/"))+subPath;
+            }
+            if(document.body.getElementsByClassName('contextMenu').length > 0) document.body.removeChild(el);
+          };
+          var delFile = document.createElement("li");
+          list.appendChild(delFile);
+          delFile.innerHTML = "<span>Delete</span>";
+          delFile.onclick = function(e){
+            httpDelete(path);
+            if(document.body.getElementsByClassName('contextMenu').length > 0) document.body.removeChild(el);
+          };
+        }
+  
+        function fillFileMenu(el, path){
+          var list = document.createElement("ul");
+          el.appendChild(list);
+          var action = document.createElement("li");
+          list.appendChild(action);
+          if(isTextFile(path)){
+            action.innerHTML = "<span>Edit</span>";
+            action.onclick = function(e){
+              editor.loadUrl(path);
+              if(document.body.getElementsByClassName('contextMenu').length > 0) document.body.removeChild(el);
+            };
+          } 
+
+          var download = document.createElement("li");
+          list.appendChild(download);
+          download.innerHTML = "<span>Download</span>";
+          download.onclick = function(e){
+            loadDownload(path);
+            if(document.body.getElementsByClassName('contextMenu').length > 0) document.body.removeChild(el);
+          };
+          var delFile = document.createElement("li");
+          list.appendChild(delFile);
+          delFile.innerHTML = "<span>Delete</span>";
+          delFile.onclick = function(e){
+            httpDelete(path);
+            if(document.body.getElementsByClassName('contextMenu').length > 0) document.body.removeChild(el);
+          };
+        }
+  
+        function showContextMenu(e, path, isfile){
+          var divContext = document.createElement("div");
+          var scrollTop = document.body.scrollTop ? document.body.scrollTop : document.documentElement.scrollTop;
+          var scrollLeft = document.body.scrollLeft ? document.body.scrollLeft : document.documentElement.scrollLeft;
+          var left = e.clientX + scrollLeft;
+          var top = e.clientY + scrollTop;
+          divContext.className = 'contextMenu';
+          divContext.style.display = 'block';
+          divContext.style.left = left + 'px';
+          divContext.style.top = top + 'px';
+          if(isfile) fillFileMenu(divContext, path);
+          else fillFolderMenu(divContext, path);
+          document.body.appendChild(divContext);
+          var width = divContext.offsetWidth;
+          var height = divContext.offsetHeight;
+          divContext.onmouseout = function(e){
+            if(e.clientX < left || e.clientX > (left + width) || e.clientY < top || e.clientY > (top + height)){
+              if(document.body.getElementsByClassName('contextMenu').length > 0) document.body.removeChild(divContext);
+            }
+          };
+        }
+  
+        function createTreeLeaf(path, name, size){
+          var leaf = document.createElement("li");
+          leaf.id = (((path == "/")?"":path)+"/"+name);//.toLowerCase();
+          var label = document.createElement("span");
+          label.textContent = name;//.toLowerCase();
+          leaf.appendChild(label);
+          leaf.onclick = function(e){
+            if(isTextFile(leaf.id)){
+              editor.loadUrl(leaf.id);
+            } 
+          };
+          leaf.oncontextmenu = function(e){
+            e.preventDefault();
+            e.stopPropagation();
+            showContextMenu(e, leaf.id, true);
+          };
+          return leaf;
+        }
+  
+        function createTreeBranch(path, name, disabled){
+          var leaf = document.createElement("li");
+          var check = document.createElement("input");
+          check.type = "checkbox";
+          check.id = (((path == "/") ? "" : path) + "/" + name);//.toLowerCase();
+          if(typeof disabled !== "undefined" && disabled) check.disabled = "disabled";
+          leaf.appendChild(check);
+          var label = document.createElement("label");
+          label.for = check.id;
+          label.textContent = name;//.toLowerCase();
+          leaf.appendChild(label);
+          check.onchange = function(e){
+            if(check.checked){
+              if(leaf.childNodes.length == 3) leaf.removeChild(leaf.childNodes[2]);
+              httpGet(leaf, check.id);
+            }
+          };
+          label.onclick = function(e){
+            if(!check.checked){
+              check.checked = true;
+              if(leaf.childNodes.length == 3) leaf.removeChild(leaf.childNodes[2]);
+              httpGet(leaf, check.id);
+            } else {
+              check.checked = false;
+            }
+          };
+          leaf.oncontextmenu = function(e){
+            e.preventDefault();
+            e.stopPropagation();
+            showContextMenu(e, check.id, false);
+          }
+          return leaf;
+        }
+  
+        function addList(parent, path, items){
+          var list = document.createElement("ul");
+          parent.appendChild(list);
+          var ll = items.length;
+          for(var i = 0; i < ll; i++){
+            var item = items[i];
+            var itemEl;
+            if(item.type === "file"){
+              itemEl = createTreeLeaf(path, item.name, item.size);
+            } else {
+              itemEl = createTreeBranch(path, item.name);
+            }
+            list.appendChild(itemEl);
+          }
+    
+        }
+  
+        function isTextFile(path){
+          var ext = /(?:\.([^.]+))?$/.exec(path)[1];
+          if(typeof ext !== undefined){
+            switch(ext){
+              case "txt":
+              case "htm":
+              case "html":
+              case "js":
+              case "json":
+              case "c":
+              case "h":
+              case "cpp":
+              case "css":
+              case "xml":
+                return true;
+            }
+          }
+          return false;
+        }
+  
+        this.refreshPath = function(path){
+          if(path.lastIndexOf('/') < 1){
+            path = '/';
+            treeRoot.removeChild(treeRoot.childNodes[0]);
+            httpGet(treeRoot, "/");
+          } else {
+            path = path.substring(0, path.lastIndexOf('/'));
+            var leaf = document.getElementById(path).parentNode;
+            if(leaf.childNodes.length == 3) leaf.removeChild(leaf.childNodes[2]);
+            httpGet(leaf, path);
+          }
+        };
+  
+        function delCb(path){
+          return function(){
+            if (xmlHttp.readyState == 4){
+              if(xmlHttp.status != 200){
+                alert("ERROR["+xmlHttp.status+"]: "+xmlHttp.responseText);
+              } else {
+                if(path.lastIndexOf('/') < 1){
+                  path = '/';
+                  treeRoot.removeChild(treeRoot.childNodes[0]);
+                  httpGet(treeRoot, "/");
+                } else {
+                  path = path.substring(0, path.lastIndexOf('/'));
+                  var leaf = document.getElementById(path).parentNode;
+                  if(leaf.childNodes.length == 3) leaf.removeChild(leaf.childNodes[2]);
+                  httpGet(leaf, path);
+                }
+              }
+            }
+          }
+        }
+  
+        function httpDelete(filename){
+          xmlHttp = new XMLHttpRequest();
+          xmlHttp.onreadystatechange = delCb(filename);
+          var formData = new FormData();
+          formData.append("path", filename);
+          xmlHttp.open("DELETE", "/edit");
+          xmlHttp.send(formData);
+        }
+  
+        function getCb(parent, path){
+          return function(){
+            if (xmlHttp.readyState == 4){
+              //clear loading
+              if(xmlHttp.status == 200) addList(parent, path, JSON.parse(xmlHttp.responseText));
+            }
+          }
+        }
+  
+        function httpGet(parent, path){
+          xmlHttp = new XMLHttpRequest(parent, path);
+          xmlHttp.onreadystatechange = getCb(parent, path);
+          xmlHttp.open("GET", "/list?dir="+path, true);
+          xmlHttp.send(null);
+          //start loading
+        }
+  
+        httpGet(treeRoot, "/");
+        return this;
+      }
+
+
+      function onBodyLoad(){
+        var vars = {};
+        var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) { vars[key] = value; });
+
+        var tree = createTree("tree", editor);
+        createFileUploader("uploader", tree, editor);
+      };
+      
+
+      
+    </script>
+    <script src="ace.js" type="text/javascript" charset="utf-8"></script>
+
+
+
+</head>
+<body onload="onBodyLoad();">
+  <div class="mypanel">
+    <div class="mytext">ESP to STM32 istarik.ru</div>
+   </div>
+  
+  
+    <div id="uploader" ></div>
+    <div id="tree"></div>
+    <div id="editor"></div>
+
+    <iframe id=download-frame style='display:none;'></iframe>
+  
+    <div class='knop enter_boot'>Enter boot</div><br/>
+    <div class='knop write'>Write</div><br/>
+    <div class='knop reset'>Reset</div><br/>
+    <div class='knop on_boot'>On boot</div><br/>
+    <div class='knop off_boot'>Off boot</div><br/>
+    <div class='knop event'>Event</div><br/>
+    
+  
+    <div class="recres">Result</div><br/>
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

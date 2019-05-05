@@ -1,0 +1,1 @@
+stm32f3xx_hal_spi_ex.c:96:19:HAL_SPIEx_FlushRxFifo	8	static

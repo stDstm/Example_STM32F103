@@ -1,0 +1,5 @@
+main.c:100:6:USB_Receive_Callback	0	static
+main.c:185:6:SystemClock_Config	136	static
+main.c:346:6:USB_reset	32	static
+main.c:112:5:main	48	static
+main.c:369:6:Error_Handler	0	static

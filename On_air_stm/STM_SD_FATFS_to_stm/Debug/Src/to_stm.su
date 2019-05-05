@@ -1,0 +1,11 @@
+to_stm.c:41:6:on_reset	8	static
+to_stm.c:49:6:on_off_boot	0	static
+to_stm.c:55:6:boot_off_and_reset	8	static
+to_stm.c:118:9:ack_byte	16	static
+to_stm.c:20:6:entr_bootloader	16	static
+to_stm.c:111:9:send_cmd	8	static
+to_stm.c:64:9:erase_memory	16	static
+to_stm.c:85:6:get_id	48	static
+to_stm.c:154:9:send_adress	16	static
+to_stm.c:133:6:go_prog	16	static
+to_stm.c:171:6:write_memory	1704	static

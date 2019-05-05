@@ -1,0 +1,5 @@
+ff_gen_drv.c:49:9:FATFS_LinkDriverEx	12	static
+ff_gen_drv.c:78:9:FATFS_LinkDriver	0	static
+ff_gen_drv.c:90:9:FATFS_UnLinkDriverEx	0	static
+ff_gen_drv.c:116:9:FATFS_UnLinkDriver	0	static
+ff_gen_drv.c:126:9:FATFS_GetAttachedDriversNbr	0	static

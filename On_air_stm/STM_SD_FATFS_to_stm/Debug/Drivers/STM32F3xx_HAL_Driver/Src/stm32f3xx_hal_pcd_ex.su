@@ -1,0 +1,4 @@
+stm32f3xx_hal_pcd_ex.c:101:20:HAL_PCDEx_PMAConfig	8	static
+stm32f3xx_hal_pcd_ex.c:163:6:PCD_WritePMA	12	static
+stm32f3xx_hal_pcd_ex.c:190:6:PCD_ReadPMA	16	static
+stm32f3xx_hal_pcd_ex.c:294:14:HAL_PCDEx_SetConnectionState	0	static

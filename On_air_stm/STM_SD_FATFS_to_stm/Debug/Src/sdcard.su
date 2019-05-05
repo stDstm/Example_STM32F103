@@ -1,0 +1,16 @@
+sdcard.c:11:13:SDCARD_Select	0	static
+sdcard.c:32:16:SDCARD_ReadR1	24	static
+sdcard.c:70:12:SDCARD_ReadBytes	40	static
+sdcard.c:84:12:SDCARD_WaitNotBusy	16	static
+sdcard.c:53:12:SDCARD_WaitDataToken.constprop	32	static
+sdcard.c:16:6:SDCARD_Unselect	0	static
+sdcard.c:97:5:SDCARD_Init	24	static
+sdcard.c:275:5:SDCARD_GetBlocksNumber	40	static
+sdcard.c:334:5:SDCARD_ReadSingleBlock	32	static
+sdcard.c:387:5:SDCARD_WriteSingleBlock	32	static
+sdcard.c:447:5:SDCARD_ReadBegin	16	static
+sdcard.c:479:5:SDCARD_ReadData	16	static
+sdcard.c:507:5:SDCARD_ReadEnd	16	static
+sdcard.c:538:5:SDCARD_WriteBegin	16	static
+sdcard.c:570:5:SDCARD_WriteData	16	static
+sdcard.c:606:5:SDCARD_WriteEnd	16	static

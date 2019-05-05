@@ -1,0 +1,2 @@
+sd_init.c:20:6:UART_Printf	272	static
+sd_init.c:32:6:init	2568	static

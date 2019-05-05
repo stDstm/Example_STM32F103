@@ -1,0 +1,234 @@
+@font-face {
+font-family: 'shrift';
+src: url('myfont.ttf');
+}
+
+
+body {
+background: #fff;
+/*margin: 100px 260px;*/
+font-family: 'shrift';
+font-size: 22px;
+color: #555;
+-moz-user-select: none;
+-webkit-user-select: none;
+-webkit-overflow-scrolling: touch;
+text-decoration: none;
+}
+
+.mypanel {
+position: absolute;
+top: 0px;
+left: 0px;
+width: 100%; 
+height: 50px; 
+background:#3b4045;
+
+}
+
+.mytext {
+position: absolute;
+top: 11px;
+left: 10px;
+font-size: 24px;
+color: #babdb2; 
+}
+
+.contextMenu {
+z-index: 300;
+position: absolute;
+left: 5px;
+border: 1px solid #444;
+background-color: #F5F5F5;
+display: none;
+box-shadow: 0 0 10px rgba( 0, 0, 0, .4 );
+font-size: 12px;
+font-family: sans-serif;
+font-weight:bold;
+}
+.contextMenu ul {
+list-style: none;
+top: 0;
+left: 0;
+margin: 0;
+padding: 0;
+}
+.contextMenu li {
+position: relative;
+min-width: 60px;
+cursor: pointer;
+}
+.contextMenu span {
+color: #444;
+display: inline-block;
+padding: 6px;
+}
+.contextMenu li:hover { background: #444; }
+.contextMenu li:hover span { color: #EEE; }
+
+.css-treeview ul, .css-treeview li {
+padding: 0;
+margin: 0;
+list-style: none;
+}
+
+.css-treeview input {
+position: absolute;
+opacity: 0;
+}
+
+.css-treeview {
+font: normal 18px Verdana, Arial, Sans-serif;
+-moz-user-select: none;
+-webkit-user-select: none;
+user-select: none;
+}
+
+.css-treeview span {
+color: #00f;
+cursor: pointer;
+}
+
+.css-treeview span:hover {
+text-decoration: underline;
+}
+
+.css-treeview input + label + ul {
+margin: 0 0 0 22px;
+}
+
+.css-treeview input ~ ul {
+display: none;
+}
+
+.css-treeview label, .css-treeview label::before {
+cursor: pointer;
+}
+
+.css-treeview input:disabled + label {
+cursor: default;
+opacity: .6;
+}
+
+.css-treeview input:checked:not(:disabled) ~ ul {
+display: block;
+}
+
+.css-treeview label, .css-treeview label::before {
+background-color: #F5F5F5;
+}
+
+.css-treeview label, .css-treeview span, .css-treeview label::before {
+display: inline-block;
+height: 16px;
+line-height: 16px;
+vertical-align: middle;
+}
+
+.css-treeview label {
+background-position: 18px 0;
+}
+
+.css-treeview label::before {
+content: "";
+width: 16px;
+margin: 0 22px 0 0;
+vertical-align: middle;
+background-position: 0 -32px;
+}
+
+.css-treeview input:checked + label::before {
+background-position: 0 -16px;
+}
+
+/* webkit adjacent element selector bugfix */
+@media screen and (-webkit-min-device-pixel-ratio:0)
+{
+.css-treeview{
+  -webkit-animation: webkit-adjacent-element-selector-bugfix infinite 1s;
+}
+
+@-webkit-keyframes webkit-adjacent-element-selector-bugfix 
+{
+  from  { 
+	padding: 0;
+  } 
+  to  { 
+	padding: 0;
+  }
+}
+}
+
+#uploader { 
+position: absolute;
+top: 50px;
+right: 0;
+left: 0;
+height:50px;
+line-height: 41px;
+padding-left: 10px;
+background-color: #3b4045;
+border-bottom: 1px solid #e71341;
+color:#EEE;
+}
+#tree { 
+position: absolute;
+top: 110px;
+bottom: 0;
+left: 0;
+width:250px;
+font-size: 20px;
+padding: 8px;
+}
+#editor, #preview { 
+position: absolute;
+top: 780px;
+left: 580px;
+height:50px;
+width: 100px;
+}
+
+.knop {
+position: relative;
+top: 200px;
+left: 350px;
+height: 50px;
+width: 130px;
+font-family: shrift, arial, sans-serif;
+font-size: 20px;
+padding: 0 60px;
+text-align: center;
+line-height: 2.4;
+background: #3b4045;
+cursor: pointer;
+color: #babdb2;
+}
+
+.recres {
+position: absolute;
+top: 120px; 
+left: 360px; 
+font-size: 30px;
+font-family: shrift, arial, sans-serif;
+font-weight: normal;
+color: #777;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
