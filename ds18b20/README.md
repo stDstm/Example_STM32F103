@@ -1,6 +1,6 @@
 Работа с датчиком температуры DS18B20
 
-В CubeMX настроить любой пин как GPIO_Output, например PB5
+В CubeMX настроить любой пин как GPIO_Output, например **PB5**
 
 
 GPIO Output Level - Low
@@ -14,9 +14,9 @@ Maximum output speed - High
 -------------------------------------------------------
 В файле ds18b20.c прописать этот пин...
 
-#define MY_PORT GPIOB
+#define MY_PORT **GPIOB**
 
-#define MY_PIN  GPIO_PIN_5
+#define MY_PIN  **GPIO_PIN_5**
 
 -------------------------------------------------------
 
