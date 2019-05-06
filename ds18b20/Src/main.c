@@ -113,13 +113,14 @@ int main(void)
   MX_USART1_UART_Init();
   /* USER CODE BEGIN 2 */
   Init_ds18b20(DS18B20_Resolution_12_bit);
+
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-	  uint16_t temp = ds18b20_getTemperature();
+	  int16_t temp = ds18b20_getTemperature();
 	  float t = temp / 16.0;
 	  char str[32] = {0,};
 

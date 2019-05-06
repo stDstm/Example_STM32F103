@@ -44,6 +44,6 @@ void DWT_Init(void);
 void delay_us(uint32_t us);
 void Init_ds18b20(DS18B20_Resolution resolution);
 void setResolution(DS18B20_Resolution resolution);
-uint16_t ds18b20_getTemperature();
+int16_t ds18b20_getTemperature();
 
 #endif /* DS18B20_H_ */

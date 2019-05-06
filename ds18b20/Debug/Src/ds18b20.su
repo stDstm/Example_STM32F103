@@ -5,7 +5,7 @@ ds18b20.c:43:9:getDevider	0	static
 ds18b20.c:66:6:writeBit	8	static
 ds18b20.c:74:6:writeByte	16	static
 ds18b20.c:83:9:readBit	8	static
-ds18b20.c:95:10:readTemperature	16	static
-ds18b20.c:107:10:ds18b20_getTemperature	8	static
+ds18b20.c:95:9:readTemperature	16	static
+ds18b20.c:107:9:ds18b20_getTemperature	8	static
 ds18b20.c:121:6:setResolution	8	static
 ds18b20.c:29:6:Init_ds18b20	8	static

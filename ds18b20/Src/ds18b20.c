@@ -92,19 +92,19 @@ uint8_t readBit()
 	return bit;
 }
 
-uint16_t readTemperature()
+int16_t readTemperature()
 {
-	uint16_t data = 0;
+	int16_t data = 0;
 	for (uint8_t i = 0; i < 16; i++)
 	{
-		data += (uint16_t) readBit() << i;
+		data += (int16_t) readBit() << i;
 	}
 
 	//return  (uint16_t)(((float) data / 16.0) * 10.0);
 	return data;
 }
 
-uint16_t ds18b20_getTemperature()
+int16_t ds18b20_getTemperature()
 {
 	reset();
 	writeByte(SKIP_ROM);
