@@ -8,6 +8,9 @@
 
 #include "ds18b20.h"
 
+#define MY_PORT GPIOB
+#define MY_PIN  GPIO_PIN_5
+
 uint32_t DELAY_WAIT_CONVERT = DELAY_T_CONVERT;
 
 void DWT_Init(void)
@@ -31,9 +34,9 @@ void Init_ds18b20(DS18B20_Resolution resolution)
 
 void reset()
 {
-	HAL_GPIO_WritePin(DSpin_GPIO_Port, DSpin_Pin, GPIO_PIN_RESET);
+	HAL_GPIO_WritePin(MY_PORT, MY_PIN, GPIO_PIN_RESET);
 	delay_us(DELAY_RESET);
-	HAL_GPIO_WritePin(DSpin_GPIO_Port, DSpin_Pin, GPIO_PIN_SET);
+	HAL_GPIO_WritePin(MY_PORT, MY_PIN, GPIO_PIN_SET);
 	delay_us(DELAY_RESET);
 }
 
@@ -62,9 +65,9 @@ uint8_t getDevider(DS18B20_Resolution resolution)
 
 void writeBit(uint8_t bit)
 {
-	HAL_GPIO_WritePin(DSpin_GPIO_Port, DSpin_Pin, GPIO_PIN_RESET);
+	HAL_GPIO_WritePin(MY_PORT, MY_PIN, GPIO_PIN_RESET);
 	delay_us(bit ? DELAY_WRITE_1 : DELAY_WRITE_0);
-	HAL_GPIO_WritePin(DSpin_GPIO_Port, DSpin_Pin, GPIO_PIN_SET);
+	HAL_GPIO_WritePin(MY_PORT, MY_PIN, GPIO_PIN_SET);
 	delay_us(bit ? DELAY_WRITE_1_PAUSE : DELAY_WRITE_0_PAUSE);
 }
 
@@ -80,11 +83,11 @@ void writeByte(uint8_t data)
 uint8_t readBit()
 {
 	uint8_t bit = 0;
-	HAL_GPIO_WritePin(DSpin_GPIO_Port, DSpin_Pin, GPIO_PIN_RESET);
+	HAL_GPIO_WritePin(MY_PORT, MY_PIN, GPIO_PIN_RESET);
 	delay_us(DELAY_READ_SLOT);
-	HAL_GPIO_WritePin(DSpin_GPIO_Port, DSpin_Pin, GPIO_PIN_SET);
+	HAL_GPIO_WritePin(MY_PORT, MY_PIN, GPIO_PIN_SET);
 	delay_us(DELAY_BUS_RELAX);
-	bit = (HAL_GPIO_ReadPin(DSpin_GPIO_Port, DSpin_Pin) ? 1 : 0);
+	bit = (HAL_GPIO_ReadPin(MY_PORT, MY_PIN) ? 1 : 0);
 	delay_us(DELAY_READ_PAUSE);
 	return bit;
 }

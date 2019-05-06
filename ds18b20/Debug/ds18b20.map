@@ -1455,18 +1455,18 @@ OUTPUT(ds18b20.elf elf32-littlearm)
  .debug_ranges  0x0000000000000678       0x18 Src/system_stm32f1xx.o
  .debug_ranges  0x0000000000000690       0x20 startup/startup_stm32f103xb.o
 
-.debug_line     0x0000000000000000     0x2f2c
+.debug_line     0x0000000000000000     0x2f2d
  .debug_line    0x0000000000000000      0x43e Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal.o
  .debug_line    0x000000000000043e      0x448 Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_cortex.o
  .debug_line    0x0000000000000886      0x43d Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_gpio.o
  .debug_line    0x0000000000000cc3      0x618 Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_rcc.o
  .debug_line    0x00000000000012db      0xc24 Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_uart.o
- .debug_line    0x0000000000001eff      0x37a Src/ds18b20.o
- .debug_line    0x0000000000002279      0x3ff Src/main.o
- .debug_line    0x0000000000002678      0x306 Src/stm32f1xx_hal_msp.o
- .debug_line    0x000000000000297e      0x293 Src/stm32f1xx_it.o
- .debug_line    0x0000000000002c11      0x29e Src/system_stm32f1xx.o
- .debug_line    0x0000000000002eaf       0x7d startup/startup_stm32f103xb.o
+ .debug_line    0x0000000000001eff      0x37b Src/ds18b20.o
+ .debug_line    0x000000000000227a      0x3ff Src/main.o
+ .debug_line    0x0000000000002679      0x306 Src/stm32f1xx_hal_msp.o
+ .debug_line    0x000000000000297f      0x293 Src/stm32f1xx_it.o
+ .debug_line    0x0000000000002c12      0x29e Src/system_stm32f1xx.o
+ .debug_line    0x0000000000002eb0       0x7d startup/startup_stm32f103xb.o
 
 .debug_str      0x0000000000000000     0x2032
  .debug_str     0x0000000000000000      0xbdb Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal.o

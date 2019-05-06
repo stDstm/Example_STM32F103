@@ -31,11 +31,11 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY, DEBUGGING
  13 .debug_ranges 000006b0  00000000  00000000  0002f610  2**3
                   CONTENTS, READONLY, DEBUGGING
- 14 .debug_line   00002f2c  00000000  00000000  0002fcc0  2**0
+ 14 .debug_line   00002f2d  00000000  00000000  0002fcc0  2**0
                   CONTENTS, READONLY, DEBUGGING
- 15 .debug_str    00002032  00000000  00000000  00032bec  2**0
+ 15 .debug_str    00002032  00000000  00000000  00032bed  2**0
                   CONTENTS, READONLY, DEBUGGING
- 16 .comment      0000007c  00000000  00000000  00034c1e  2**0
+ 16 .comment      0000007c  00000000  00000000  00034c1f  2**0
                   CONTENTS, READONLY
  17 .debug_frame  000016ec  00000000  00000000  00034c9c  2**2
                   CONTENTS, READONLY, DEBUGGING
@@ -2726,7 +2726,7 @@ void delay_us(uint32_t us)
 void reset()
 {
  8001680:	b510      	push	{r4, lr}
-	HAL_GPIO_WritePin(DSpin_GPIO_Port, DSpin_Pin, GPIO_PIN_RESET);
+	HAL_GPIO_WritePin(MY_PORT, MY_PIN, GPIO_PIN_RESET);
  8001682:	4c0a      	ldr	r4, [pc, #40]	; (80016ac <reset+0x2c>)
  8001684:	2200      	movs	r2, #0
  8001686:	2120      	movs	r1, #32
@@ -2735,7 +2735,7 @@ void reset()
 	delay_us(DELAY_RESET);
  800168e:	f44f 70fa 	mov.w	r0, #500	; 0x1f4
  8001692:	f7ff ffe1 	bl	8001658 <delay_us>
-	HAL_GPIO_WritePin(DSpin_GPIO_Port, DSpin_Pin, GPIO_PIN_SET);
+	HAL_GPIO_WritePin(MY_PORT, MY_PIN, GPIO_PIN_SET);
  8001696:	4620      	mov	r0, r4
  8001698:	2201      	movs	r2, #1
  800169a:	2120      	movs	r1, #32
@@ -2788,7 +2788,7 @@ void writeBit(uint8_t bit)
 {
  80016cc:	b510      	push	{r4, lr}
  80016ce:	4604      	mov	r4, r0
-	HAL_GPIO_WritePin(DSpin_GPIO_Port, DSpin_Pin, GPIO_PIN_RESET);
+	HAL_GPIO_WritePin(MY_PORT, MY_PIN, GPIO_PIN_RESET);
  80016d0:	2200      	movs	r2, #0
  80016d2:	480c      	ldr	r0, [pc, #48]	; (8001704 <writeBit+0x38>)
  80016d4:	2120      	movs	r1, #32
@@ -2799,7 +2799,7 @@ void writeBit(uint8_t bit)
  80016de:	200a      	movne	r0, #10
  80016e0:	203c      	moveq	r0, #60	; 0x3c
  80016e2:	f7ff ffb9 	bl	8001658 <delay_us>
-	HAL_GPIO_WritePin(DSpin_GPIO_Port, DSpin_Pin, GPIO_PIN_SET);
+	HAL_GPIO_WritePin(MY_PORT, MY_PIN, GPIO_PIN_SET);
  80016e6:	4807      	ldr	r0, [pc, #28]	; (8001704 <writeBit+0x38>)
  80016e8:	2201      	movs	r2, #1
  80016ea:	2120      	movs	r1, #32
@@ -2847,7 +2847,7 @@ uint8_t readBit()
 {
  8001728:	b510      	push	{r4, lr}
 	uint8_t bit = 0;
-	HAL_GPIO_WritePin(DSpin_GPIO_Port, DSpin_Pin, GPIO_PIN_RESET);
+	HAL_GPIO_WritePin(MY_PORT, MY_PIN, GPIO_PIN_RESET);
  800172a:	4c0e      	ldr	r4, [pc, #56]	; (8001764 <readBit+0x3c>)
  800172c:	2200      	movs	r2, #0
  800172e:	2120      	movs	r1, #32
@@ -2856,7 +2856,7 @@ uint8_t readBit()
 	delay_us(DELAY_READ_SLOT);
  8001736:	200a      	movs	r0, #10
  8001738:	f7ff ff8e 	bl	8001658 <delay_us>
-	HAL_GPIO_WritePin(DSpin_GPIO_Port, DSpin_Pin, GPIO_PIN_SET);
+	HAL_GPIO_WritePin(MY_PORT, MY_PIN, GPIO_PIN_SET);
  800173c:	2201      	movs	r2, #1
  800173e:	2120      	movs	r1, #32
  8001740:	4620      	mov	r0, r4
@@ -2864,7 +2864,7 @@ uint8_t readBit()
 	delay_us(DELAY_BUS_RELAX);
  8001746:	200a      	movs	r0, #10
  8001748:	f7ff ff86 	bl	8001658 <delay_us>
-	bit = (HAL_GPIO_ReadPin(DSpin_GPIO_Port, DSpin_Pin) ? 1 : 0);
+	bit = (HAL_GPIO_ReadPin(MY_PORT, MY_PIN) ? 1 : 0);
  800174c:	2120      	movs	r1, #32
  800174e:	4620      	mov	r0, r4
  8001750:	f7ff fb7c 	bl	8000e4c <HAL_GPIO_ReadPin>
@@ -3103,19 +3103,19 @@ static void MX_GPIO_Init(void)
   __HAL_RCC_GPIOB_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(DSpin_GPIO_Port, DSpin_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOB, GPIO_PIN_5, GPIO_PIN_RESET);
  8001878:	2120      	movs	r1, #32
   __HAL_RCC_GPIOD_CLK_ENABLE();
  800187a:	699a      	ldr	r2, [r3, #24]
-  HAL_GPIO_WritePin(DSpin_GPIO_Port, DSpin_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOB, GPIO_PIN_5, GPIO_PIN_RESET);
  800187c:	483d      	ldr	r0, [pc, #244]	; (8001974 <main+0x114>)
   __HAL_RCC_GPIOD_CLK_ENABLE();
  800187e:	f042 0220 	orr.w	r2, r2, #32
  8001882:	619a      	str	r2, [r3, #24]
  8001884:	699a      	ldr	r2, [r3, #24]
 
-  /*Configure GPIO pin : DSpin_Pin */
-  GPIO_InitStruct.Pin = DSpin_Pin;
+  /*Configure GPIO pin : PB5 */
+  GPIO_InitStruct.Pin = GPIO_PIN_5;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_OD;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
  8001886:	2500      	movs	r5, #0
@@ -3145,15 +3145,15 @@ static void MX_GPIO_Init(void)
  80018aa:	f042 0208 	orr.w	r2, r2, #8
  80018ae:	619a      	str	r2, [r3, #24]
  80018b0:	699b      	ldr	r3, [r3, #24]
-  HAL_GPIO_WritePin(DSpin_GPIO_Port, DSpin_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOB, GPIO_PIN_5, GPIO_PIN_RESET);
  80018b2:	2200      	movs	r2, #0
   __HAL_RCC_GPIOB_CLK_ENABLE();
  80018b4:	f003 0308 	and.w	r3, r3, #8
  80018b8:	9305      	str	r3, [sp, #20]
  80018ba:	9b05      	ldr	r3, [sp, #20]
-  HAL_GPIO_WritePin(DSpin_GPIO_Port, DSpin_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOB, GPIO_PIN_5, GPIO_PIN_RESET);
  80018bc:	f7ff facc 	bl	8000e58 <HAL_GPIO_WritePin>
-  GPIO_InitStruct.Pin = DSpin_Pin;
+  GPIO_InitStruct.Pin = GPIO_PIN_5;
  80018c0:	2320      	movs	r3, #32
  80018c2:	9306      	str	r3, [sp, #24]
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_OD;
@@ -3161,14 +3161,14 @@ static void MX_GPIO_Init(void)
  80018c6:	9307      	str	r3, [sp, #28]
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
  80018c8:	2303      	movs	r3, #3
-  HAL_GPIO_Init(DSpin_GPIO_Port, &GPIO_InitStruct);
+  HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
  80018ca:	a906      	add	r1, sp, #24
  80018cc:	4829      	ldr	r0, [pc, #164]	; (8001974 <main+0x114>)
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
  80018ce:	9309      	str	r3, [sp, #36]	; 0x24
   GPIO_InitStruct.Pull = GPIO_NOPULL;
  80018d0:	9508      	str	r5, [sp, #32]
-  HAL_GPIO_Init(DSpin_GPIO_Port, &GPIO_InitStruct);
+  HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
  80018d2:	f7ff f9db 	bl	8000c8c <HAL_GPIO_Init>
   huart1.Init.BaudRate = 115200;
  80018d6:	f44f 33e1 	mov.w	r3, #115200	; 0x1c200
