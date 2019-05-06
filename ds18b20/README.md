@@ -15,6 +15,7 @@ Maximum output speed - High
 В файле ds18b20.c прописать этот пин...
 
 #define MY_PORT GPIOB
+
 #define MY_PIN  GPIO_PIN_5
 
 -------------------------------------------------------
