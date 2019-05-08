@@ -1,0 +1,12 @@
+ds18b20.c:19:6:DWT_Init	0	static
+ds18b20.c:25:6:delay_us	0	static
+ds18b20.c:32:6:HAL_TIM_PeriodElapsedCallback	8	static
+ds18b20.c:47:6:reset	8	static
+ds18b20.c:55:9:getDevider	0	static
+ds18b20.c:78:6:writeBit	8	static
+ds18b20.c:86:6:writeByte	16	static
+ds18b20.c:95:9:readBit	8	static
+ds18b20.c:107:6:ds18b20_getTemperature	8	static
+ds18b20.c:116:9:resTemperature	16	static
+ds18b20.c:131:6:setResolution	8	static
+ds18b20.c:41:6:Init_ds18b20	8	static

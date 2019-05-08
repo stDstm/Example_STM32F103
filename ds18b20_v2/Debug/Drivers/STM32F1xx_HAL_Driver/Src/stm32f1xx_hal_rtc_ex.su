@@ -1,0 +1,14 @@
+stm32f1xx_hal_rtc_ex.c:97:19:HAL_RTCEx_SetTamper	16	static
+stm32f1xx_hal_rtc_ex.c:143:19:HAL_RTCEx_SetTamper_IT	16	static
+stm32f1xx_hal_rtc_ex.c:191:19:HAL_RTCEx_DeactivateTamper	0	static
+stm32f1xx_hal_rtc_ex.c:259:13:HAL_RTCEx_Tamper1EventCallback	0	static
+stm32f1xx_hal_rtc_ex.c:233:6:HAL_RTCEx_TamperIRQHandler	16	static
+stm32f1xx_hal_rtc_ex.c:275:19:HAL_RTCEx_PollForTamper1Event	24	static
+stm32f1xx_hal_rtc_ex.c:331:19:HAL_RTCEx_SetSecond_IT	0	static
+stm32f1xx_hal_rtc_ex.c:361:19:HAL_RTCEx_DeactivateSecond	0	static
+stm32f1xx_hal_rtc_ex.c:431:13:HAL_RTCEx_RTCEventCallback	0	static
+stm32f1xx_hal_rtc_ex.c:446:13:HAL_RTCEx_RTCEventErrorCallback	0	static
+stm32f1xx_hal_rtc_ex.c:391:6:HAL_RTCEx_RTCIRQHandler	8	static
+stm32f1xx_hal_rtc_ex.c:486:6:HAL_RTCEx_BKUPWrite	0	static
+stm32f1xx_hal_rtc_ex.c:511:10:HAL_RTCEx_BKUPRead	0	static
+stm32f1xx_hal_rtc_ex.c:541:19:HAL_RTCEx_SetSmoothCalib	0	static
