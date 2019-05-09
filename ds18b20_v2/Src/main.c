@@ -131,6 +131,8 @@ int main(void)
 	  }
 	  else if(flag == 2) // когда таймер отсчитает 750мс, он установит flag == 2
 	  {
+		  flag = 0;
+		  
 		  int16_t temp = resTemperature(); // зависаем на ~3мс
 
 		  float t = temp / 16.0;
