@@ -2,7 +2,7 @@
  * ds18b20.c
  *
  *  Created on: 5 мая 2019 г.
- *      Author: dima
+ *      Author: istarik.ru
  */
 
 
