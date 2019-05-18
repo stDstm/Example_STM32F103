@@ -5,7 +5,7 @@
  *      Author: dima
  */
 
-#include "stm32f1xx_hal.h"
+#include "main.h"
 #include "lcd.h"
 
 #define DWT_CONTROL *(volatile unsigned long *)0xE0001000
