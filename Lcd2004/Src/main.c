@@ -114,7 +114,7 @@ int main(void)
   MX_GPIO_Init();
   MX_I2C1_Init();
   /* USER CODE BEGIN 2 */
-  DWT_Init();
+  //DWT_Init();
   char str[16] = {0,};
   LCD_ini();
   snprintf(str, 10, "Stm32F103");

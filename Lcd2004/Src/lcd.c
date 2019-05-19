@@ -98,6 +98,8 @@ void LCD_SetPos(uint8_t x, uint8_t y)
 
 void LCD_ini(void)
 {
+	DWT_Init();
+	
 	HAL_Delay(15);
 	sendhalfbyte(0x03);
 	HAL_Delay(4);
