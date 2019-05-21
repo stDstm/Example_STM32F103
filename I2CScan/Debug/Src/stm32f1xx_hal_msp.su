@@ -1,5 +1,5 @@
-stm32f1xx_hal_msp.c:48:6:HAL_MspInit	16	static
-stm32f1xx_hal_msp.c:84:6:HAL_I2C_MspInit	32	static
-stm32f1xx_hal_msp.c:112:6:HAL_I2C_MspDeInit	0	static
-stm32f1xx_hal_msp.c:136:6:HAL_UART_MspInit	32	static
-stm32f1xx_hal_msp.c:169:6:HAL_UART_MspDeInit	0	static
+stm32f1xx_hal_msp.c:84:6:HAL_MspInit	8	static
+stm32f1xx_hal_msp.c:110:6:HAL_I2C_MspInit	32	static
+stm32f1xx_hal_msp.c:146:6:HAL_I2C_MspDeInit	0	static
+stm32f1xx_hal_msp.c:176:6:HAL_UART_MspInit	32	static
+stm32f1xx_hal_msp.c:217:6:HAL_UART_MspDeInit	0	static
