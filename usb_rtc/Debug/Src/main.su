@@ -1,0 +1,4 @@
+main.c:128:6:SystemClock_Config	96	static
+main.c:247:6:USB_Reset	32	static
+main.c:70:5:main	184	static
+main.c:272:6:Error_Handler	0	static
