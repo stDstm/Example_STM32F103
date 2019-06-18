@@ -1,0 +1,6 @@
+irSend.c:8:6:DWT_Init	0	static
+irSend.c:41:6:enableIROut	72	static
+irSend.c:75:6:custom_delay_usec	0	static
+irSend.c:29:6:mark	8	static
+irSend.c:35:6:space	8	static
+irSend.c:16:6:sendRaw	16	static

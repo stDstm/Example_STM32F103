@@ -1,0 +1,2 @@
+ir_Denon.c:34:6:sendDenon	16	static
+ir_Denon.c:67:9:decodeDenon	24	static

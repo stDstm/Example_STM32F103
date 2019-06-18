@@ -1,0 +1,2 @@
+ir_Panasonic.c:21:6:sendPanasonic	24	static
+ir_Panasonic.c:52:9:decodePanasonic	24	static

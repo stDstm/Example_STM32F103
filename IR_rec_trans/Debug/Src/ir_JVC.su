@@ -1,0 +1,2 @@
+ir_JVC.c:27:6:sendJVC	16	static
+ir_JVC.c:57:9:decodeJVC	24	static

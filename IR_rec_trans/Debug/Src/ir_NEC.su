@@ -1,0 +1,2 @@
+ir_NEC.c:22:6:sendNEC	16	static
+ir_NEC.c:52:9:decodeNEC	24	static

@@ -1,0 +1,2 @@
+ir_Sony.c:22:6:sendSony	16	static
+ir_Sony.c:48:9:decodeSony	32	static
