@@ -1,0 +1,6 @@
+irRecv.c:20:6:my_enableIRIn	0	static
+irRecv.c:30:9:my_isIdle	0	static
+irRecv.c:35:6:my_resume	0	static
+irRecv.c:41:5:compare	24	static
+irRecv.c:51:9:decodeHash	24	static
+irRecv.c:7:5:my_decode	8	static

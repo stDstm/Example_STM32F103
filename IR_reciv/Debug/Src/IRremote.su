@@ -1,0 +1,6 @@
+IRremote.c:6:6:HAL_TIM_PeriodElapsedCallback	8	static
+IRremote.c:94:6:my_enableIRIn	0	static
+IRremote.c:108:6:my_resume	0	static
+IRremote.c:114:9:compare	24	static
+IRremote.c:124:9:decodeHash	24	static
+IRremote.c:80:9:my_decode	8	static
