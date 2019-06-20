@@ -1,0 +1,2 @@
+epm_24c32.c:10:6:Write_mem	88	static
+epm_24c32.c:52:6:Read_mem	56	static

@@ -1,0 +1,10 @@
+bmp180.c:41:6:BMP_readBytes	80	static
+bmp180.c:22:6:BMP_i2c_init	40	static
+bmp180.c:65:6:BMP_setControl	64	static
+bmp180.c:81:10:BMP_getMeasurement2	16	static
+bmp180.c:87:10:BMP_getMeasurement3	16	static
+bmp180.c:93:9:BMP_getMeasureDelayMilliseconds	0	static
+bmp180.c:104:10:BMP_getRawTemperature	0	static
+bmp180.c:110:7:BMP_getTemperatureC	8	static
+bmp180.c:120:10:BMP_getRawPressure	8	static
+bmp180.c:126:7:BMP_getPressure	16	static

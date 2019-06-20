@@ -1,0 +1,5 @@
+main.c:86:6:I2C_Scan	112	static
+main.c:102:6:I2C_Error	80	static
+main.c:236:6:SystemClock_Config	72	static
+main.c:179:5:main	240	static
+main.c:359:6:Error_Handler	0	static
