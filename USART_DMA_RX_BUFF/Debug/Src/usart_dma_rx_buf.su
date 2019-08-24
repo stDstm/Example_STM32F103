@@ -1,0 +1,2 @@
+usart_dma_rx_buf.c:16:10:usart1_available	0	static
+usart_dma_rx_buf.c:23:10:usart1_read	8	static

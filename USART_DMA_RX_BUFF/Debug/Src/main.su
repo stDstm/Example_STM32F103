@@ -1,0 +1,3 @@
+main.c:136:6:SystemClock_Config	72	static
+main.c:72:5:main	88	static
+main.c:240:6:Error_Handler	0	static
