@@ -185,8 +185,8 @@ int main(void)
   MX_TIM4_Init();
   MX_USART3_UART_Init();
   /* USER CODE BEGIN 2 */
-  HAL_Delay(1000);
-  HAL_GPIO_WritePin(ON_RELAY_GPIO_Port, ON_RELAY_Pin, GPIO_PIN_SET);
+  //HAL_Delay(1000);
+  //HAL_GPIO_WritePin(ON_RELAY_GPIO_Port, ON_RELAY_Pin, GPIO_PIN_SET);
   HAL_Delay(5000); // задержка чтоб модем успел раздуплиться, если его включение происходит вместе с включением МК
 
   __HAL_UART_ENABLE_IT(GSM, UART_IT_RXNE);
