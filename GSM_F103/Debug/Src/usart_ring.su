@@ -1,0 +1,4 @@
+usart_ring.c:15:9:gsm_available	0	static
+usart_ring.c:20:9:gsm_read	0	static
+usart_ring.c:40:9:dbg_available	0	static
+usart_ring.c:45:9:dbg_read	0	static

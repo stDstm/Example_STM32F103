@@ -1,0 +1,7 @@
+main.c:68:13:clear_string	8	static
+main.c:491:13:MX_USART1_UART_Init	0	static
+main.c:90:6:HAL_TIM_PeriodElapsedCallback	0	static
+main.c:99:6:chek_speed	104	static
+main.c:408:6:SystemClock_Config	72	static
+main.c:162:5:main	208	static
+main.c:586:6:Error_Handler	0	static

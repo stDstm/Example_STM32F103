@@ -1,0 +1,7 @@
+gsm.c:17:6:replac_string	0	static
+gsm.c:28:6:set_comand	184	static
+gsm.c:90:6:balance	24	static
+gsm.c:96:6:disable_connection	16	static
+gsm.c:102:6:call	40	static
+gsm.c:108:6:incoming_call	16	static
+gsm.c:114:6:get_date_time	24	static
