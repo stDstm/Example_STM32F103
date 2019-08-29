@@ -27,62 +27,87 @@ void replac_string(char *src)
 ///////////////////////// Функция для отправки настроечных команд, в цикле лучше не использовать ////////////////////////////
 void set_comand(char *buff)
 {
+	uint8_t count_err = 0;
 	char str[SEND_STR_SIZE] = {0,};
 	snprintf(str, SEND_STR_SIZE, "%s\r\n", buff);
 	HAL_UART_Transmit(GSM, (uint8_t*)str, strlen(str), 1000);
-	HAL_Delay(100);
+	HAL_Delay(200);
 
 	memset(str, 0, SEND_STR_SIZE);
 
-	if(gsm_available()) //если модуль что-то прислал
+	for(uint8_t i = 0; i < 30; i++)
 	{
-		uint16_t i = 0;
-
-		while(gsm_available())
+		if(gsm_available()) //если модуль что-то прислал
 		{
-			str[i++] = gsm_read();
-			if(i > SEND_STR_SIZE - 1) break;
-			HAL_Delay(1);
-		}
+			uint16_t i = 0;
 
-		replac_string(str);
-
-		char *p = NULL;
-
-		if((p = strstr(str, "+CPAS:")) != NULL)
-		{
-			if(strstr(str, "0") == NULL)
+			while(gsm_available())
 			{
-				HAL_UART_Transmit(DEBUG, (uint8_t*)p, strlen(p), 1000);
-				HAL_UART_Transmit(DEBUG, (uint8_t*)"\n+CPAS not ready, must be '0'\n", strlen("\n+CPAS not ready, must be '0'\n"), 1000);
+				str[i++] = gsm_read();
+				if(i > SEND_STR_SIZE - 1) break;
+				HAL_Delay(1);
+			}
 
-				while(1)
+			replac_string(str);
+
+			char *p = NULL;
+
+			if((p = strstr(str, "+CPAS:")) != NULL)
+			{
+				if(strstr(str, "0") == NULL)
 				{
-					HAL_GPIO_TogglePin(ER_LED_GPIO_Port, ER_LED_Pin);
-					HAL_Delay(100);
+					HAL_UART_Transmit(DEBUG, (uint8_t*)p, strlen(p), 1000);
+					HAL_UART_Transmit(DEBUG, (uint8_t*)"\n+CPAS not ready, must be '0'\n", strlen("\n+CPAS not ready, must be '0'\n"), 1000);
+
+					while(1) // мигаем 5 секунд и ресетим плату
+					{
+						count_err++;
+						HAL_GPIO_TogglePin(ER_LED_GPIO_Port, ER_LED_Pin);
+						HAL_Delay(100);
+						//if(count_err > 49) HAL_NVIC_SystemReset();
+					}
 				}
 			}
-		}
-		else if((p = strstr(str, "+CREG:")) != NULL)
-		{
-			if(strstr(str, "0,1") == NULL)
+			else if((p = strstr(str, "+CREG:")) != NULL)
 			{
-				HAL_UART_Transmit(DEBUG, (uint8_t*)p, strlen(p), 1000);
-				HAL_UART_Transmit(DEBUG, (uint8_t*)"\n+CREG not ready, must be '0,1'\n", strlen("\n+CREG not ready, must be '0,1'\n"), 1000);
-
-				while(1)
+				if(strstr(str, "0,1") == NULL)
 				{
-					HAL_GPIO_TogglePin(ER_LED_GPIO_Port, ER_LED_Pin);
-					HAL_Delay(100);
+					HAL_UART_Transmit(DEBUG, (uint8_t*)p, strlen(p), 1000);
+					HAL_UART_Transmit(DEBUG, (uint8_t*)"\n+CREG not ready, must be '0,1'\n", strlen("\n+CREG not ready, must be '0,1'\n"), 1000);
+
+					while(1) // мигаем 5 секунд и ресетим плату
+					{
+						count_err++;
+						HAL_GPIO_TogglePin(ER_LED_GPIO_Port, ER_LED_Pin);
+						HAL_Delay(100);
+						//if(count_err > 49) HAL_NVIC_SystemReset();
+					}
 				}
 			}
+
+
+			p = 0;
+
+			char dbg_str[SEND_STR_SIZE + 32] = {0,};
+			snprintf(dbg_str, SEND_STR_SIZE + 32, "Set %s %s\n", buff, str);
+			HAL_UART_Transmit(DEBUG, (uint8_t*)dbg_str, strlen(dbg_str), 1000);
+
+			return;
 		}
 
-		p = 0;
+		HAL_Delay(500);
 
-		char dbg_str[SEND_STR_SIZE + 32] = {0,};
-		snprintf(dbg_str, SEND_STR_SIZE + 32, "%s %s\n", buff, str);
-		HAL_UART_Transmit(DEBUG, (uint8_t*)dbg_str, strlen(dbg_str), 1000);
+	} // END for()
+
+	HAL_UART_Transmit(DEBUG, (uint8_t*)"Not reply ", strlen("Not reply "), 1000);
+	HAL_UART_Transmit(DEBUG, (uint8_t*)buff, strlen(buff), 1000);
+
+	while(1) // мигаем 5 секунд и ресетим плату
+	{
+		count_err++;
+		HAL_GPIO_TogglePin(ER_LED_GPIO_Port, ER_LED_Pin);
+		HAL_Delay(100);
+		//if(count_err > 49) HAL_NVIC_SystemReset();
 	}
 }
 
