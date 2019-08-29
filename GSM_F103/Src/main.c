@@ -136,7 +136,7 @@ void chek_speed(void)
 		  {
 			  str[i++] = gsm_read();
 			  if(i > 15) break;
-			  HAL_Delay(2);
+			  HAL_Delay(1);
 		  }
 
 		  if(strstr(str, "OK") != NULL)
@@ -237,6 +237,7 @@ int main(void)
 		uint16_t i = 0;
 		uint8_t fdbg = 1;
 		memset(buf, 0, GSM_RX_BUFFER_SIZE);
+		HAL_Delay(50);
 
 		while(gsm_available())
 		{
@@ -250,19 +251,6 @@ int main(void)
 		/////////////////// НАЧИНАЕМ РАСПОЗНАВАТЬ ЧТО ПРИСЛАЛ МОДУЛЬ /////////////////////
 		if(strstr(buf, "RING") != NULL) // ЕСЛИ ЭТО ЗВОНОК
 		{
-			HAL_Delay(30); // ждём когда придёт то, что после RING
-			memset(buf, 0, GSM_RX_BUFFER_SIZE);
-			i = 0;
-
-			while(gsm_available())
-			{
-				buf[i++] = gsm_read();
-				if(i > GSM_RX_BUFFER_SIZE - 1) break;
-				HAL_Delay(1);
-			}
-
-			clear_string(buf);
-
 			if(strstr(buf, "9834567891") != NULL) // если звонит нужный номер
 			{
 				// что-то делаем
