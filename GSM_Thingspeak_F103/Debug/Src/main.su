@@ -1,0 +1,9 @@
+main.c:69:13:clear_string	8	static
+main.c:847:13:MX_USART1_UART_Init	0	static
+main.c:91:6:HAL_TIM_PeriodElapsedCallback	0	static
+main.c:100:6:chek_speed	104	static
+main.c:158:6:send_thingspeak	2184	static
+main.c:361:6:read_thingspeak	2176	static
+main.c:767:6:SystemClock_Config	72	static
+main.c:574:5:main	304	static
+main.c:942:6:Error_Handler	0	static

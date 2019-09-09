@@ -1,0 +1,3 @@
+Все подробности тут...
+
+https://istarik.ru/blog/stm32/129.html

@@ -1,0 +1,8 @@
+gprs.c:17:6:replac_string	0	static
+gprs.c:28:6:set_comand	312	static
+gprs.c:131:6:chek_status	320	static
+gprs.c:234:6:balance	24	static
+gprs.c:240:6:disable_connection	16	static
+gprs.c:246:6:call	40	static
+gprs.c:252:6:incoming_call	16	static
+gprs.c:258:6:get_date_time	24	static
