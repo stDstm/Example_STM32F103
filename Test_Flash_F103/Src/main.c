@@ -217,16 +217,10 @@ int main(void)
   address = MYADDR + 4;
 
   char buf[64] = {0,};
-  uint16_t index = 0;
 
-  for(uint16_t i = 0; i < len / 2; i++)
+  for(uint16_t i = 0; i < len; i++)
   {
-	  volatile uint32_t dig16 = *(uint32_t*)address;
-
-	  buf[index++] = dig16 & 0xFF;
-	  buf[index++] = (dig16 & 0xFF00) >> 8;
-
-	  address = address + 2;
+	  buf[i] = *(uint32_t*)address++;
   }
 
   snprintf(str, 64, "Str: %s\n", buf);
