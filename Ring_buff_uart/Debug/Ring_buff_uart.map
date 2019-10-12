@@ -1005,18 +1005,18 @@ LOAD /opt/Atollic_TrueSTUDIO_for_STM32_x86_64_9.3.0/ARMTools/bin/../lib/gcc/arm-
                 0x00000000000002da       0x1d /opt/Atollic_TrueSTUDIO_for_STM32_x86_64_9.3.0/ARMTools/bin/../lib/gcc/arm-atollic-eabi/6.3.1/armv7-m/crtn.o
 OUTPUT(Ring_buff_uart.elf elf32-littlearm)
 
-.debug_info     0x0000000000000000     0x6939
+.debug_info     0x0000000000000000     0x6938
  .debug_info    0x0000000000000000      0x7cd Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal.o
  .debug_info    0x00000000000007cd      0xca7 Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_cortex.o
  .debug_info    0x0000000000001474      0x691 Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_gpio.o
  .debug_info    0x0000000000001b05      0xa01 Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_rcc.o
  .debug_info    0x0000000000002506     0x1632 Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_uart.o
  .debug_info    0x0000000000003b38     0x11e5 Src/main.o
- .debug_info    0x0000000000004d1d      0xa59 Src/stm32f1xx_hal_msp.o
- .debug_info    0x0000000000005776      0x6b8 Src/stm32f1xx_it.o
- .debug_info    0x0000000000005e2e      0x437 Src/system_stm32f1xx.o
- .debug_info    0x0000000000006265      0x647 Src/usart_ring.o
- .debug_info    0x00000000000068ac       0x8d startup/startup_stm32f103xb.o
+ .debug_info    0x0000000000004d1d      0xa58 Src/stm32f1xx_hal_msp.o
+ .debug_info    0x0000000000005775      0x6b8 Src/stm32f1xx_it.o
+ .debug_info    0x0000000000005e2d      0x437 Src/system_stm32f1xx.o
+ .debug_info    0x0000000000006264      0x647 Src/usart_ring.o
+ .debug_info    0x00000000000068ab       0x8d startup/startup_stm32f103xb.o
 
 .debug_abbrev   0x0000000000000000     0x1619
  .debug_abbrev  0x0000000000000000      0x24a Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal.o

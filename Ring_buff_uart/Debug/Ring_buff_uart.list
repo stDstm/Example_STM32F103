@@ -21,11 +21,11 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   ALLOC
   8 .ARM.attributes 00000029  00000000  00000000  0002000c  2**0
                   CONTENTS, READONLY
-  9 .debug_info   00006939  00000000  00000000  00020035  2**0
+  9 .debug_info   00006938  00000000  00000000  00020035  2**0
                   CONTENTS, READONLY, DEBUGGING
- 10 .debug_abbrev 00001619  00000000  00000000  0002696e  2**0
+ 10 .debug_abbrev 00001619  00000000  00000000  0002696d  2**0
                   CONTENTS, READONLY, DEBUGGING
- 11 .debug_loc    000021f9  00000000  00000000  00027f87  2**0
+ 11 .debug_loc    000021f9  00000000  00000000  00027f86  2**0
                   CONTENTS, READONLY, DEBUGGING
  12 .debug_aranges 000004e8  00000000  00000000  0002a180  2**3
                   CONTENTS, READONLY, DEBUGGING
@@ -2007,10 +2007,10 @@ void HAL_UART_MspInit(UART_HandleTypeDef* huart)
  8000d5e:	f7ff fac1 	bl	80002e4 <HAL_GPIO_Init>
 
     /* USART1 interrupt Init */
-    HAL_NVIC_SetPriority(USART1_IRQn, 0, 0);
+    HAL_NVIC_SetPriority(USART1_IRQn, 1, 0);
  8000d62:	2025      	movs	r0, #37	; 0x25
  8000d64:	4622      	mov	r2, r4
- 8000d66:	4621      	mov	r1, r4
+ 8000d66:	2101      	movs	r1, #1
  8000d68:	f7ff fa64 	bl	8000234 <HAL_NVIC_SetPriority>
     HAL_NVIC_EnableIRQ(USART1_IRQn);
  8000d6c:	2025      	movs	r0, #37	; 0x25
