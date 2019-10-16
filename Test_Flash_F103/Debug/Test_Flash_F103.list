@@ -2253,15 +2253,15 @@ static void MX_GPIO_Init(void)
  8000eb8:	951c      	str	r5, [sp, #112]	; 0x70
   HAL_GPIO_Init(LED_GPIO_Port, &GPIO_InitStruct);
  8000eba:	f7ff fb39 	bl	8000530 <HAL_GPIO_Init>
-  huart1.Init.BaudRate = 115200;
- 8000ebe:	f44f 33e1 	mov.w	r3, #115200	; 0x1c200
+  huart1.Init.BaudRate = 56000;
+ 8000ebe:	f64d 23c0 	movw	r3, #56000	; 0xdac0
   huart1.Instance = USART1;
  8000ec2:	4c99      	ldr	r4, [pc, #612]	; (8001128 <main+0x2cc>)
-  huart1.Init.BaudRate = 115200;
+  huart1.Init.BaudRate = 56000;
  8000ec4:	4a99      	ldr	r2, [pc, #612]	; (800112c <main+0x2d0>)
   if (HAL_UART_Init(&huart1) != HAL_OK)
  8000ec6:	4620      	mov	r0, r4
-  huart1.Init.BaudRate = 115200;
+  huart1.Init.BaudRate = 56000;
  8000ec8:	e884 000c 	stmia.w	r4, {r2, r3}
   huart1.Init.Mode = UART_MODE_TX_RX;
  8000ecc:	230c      	movs	r3, #12

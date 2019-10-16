@@ -60,7 +60,22 @@ static void MX_USART1_UART_Init(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
+/*#define ENDMEMORY (0x0801FC00 + 1024) // последняя ячейка флеша (F103)
 
+uint32_t flash_search_adress(uint32_t address, uint8_t cnt)
+{
+	uint8_t count_byte = cnt;
+
+	while(count_byte)
+	{
+		if(0xFF == *(uint8_t*)address++) count_byte--;
+		else count_byte = cnt;
+
+		if(address == ENDMEMORY - 1) return 0;
+	}
+
+	return address -= cnt;
+}*/
 /* USER CODE END 0 */
 
 /**
@@ -238,6 +253,13 @@ int main(void)
   HAL_UART_Transmit(&huart1, (uint8_t*)str, strlen(str), 100);
   //////////////////////// КОНЕЦ ЧТЕНИЯ /////////////////////////////
 
+
+  //uint32_t adr = flash_search_adress(0x0801FC00, 10);
+
+  //snprintf(str, 64, "Adr. Dec: %lu Hex: %lx \n", adr, adr);
+  //HAL_UART_Transmit(&huart1, (uint8_t*)str, strlen(str), 100);
+
+
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -304,7 +326,7 @@ static void MX_USART1_UART_Init(void)
 
   /* USER CODE END USART1_Init 1 */
   huart1.Instance = USART1;
-  huart1.Init.BaudRate = 115200;
+  huart1.Init.BaudRate = 56000;
   huart1.Init.WordLength = UART_WORDLENGTH_8B;
   huart1.Init.StopBits = UART_STOPBITS_1;
   huart1.Init.Parity = UART_PARITY_NONE;
