@@ -1,0 +1,10 @@
+tm1637.c:16:6:writeByte	16	static
+tm1637.c:53:6:start	8	static
+tm1637.c:64:6:stop	8	static
+tm1637.c:130:6:set_brightness	0	static
+tm1637.c:135:6:point	0	static
+tm1637.c:141:6:coding_mass	12	static
+tm1637.c:75:6:display_mass	24	static
+tm1637.c:155:8:coding	0	static
+tm1637.c:102:6:display	16	static
+tm1637.c:122:6:clearDisplay	8	static
