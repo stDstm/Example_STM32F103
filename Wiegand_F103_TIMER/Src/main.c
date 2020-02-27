@@ -146,7 +146,7 @@ int main(void)
 	  		snprintf(str, 64, "HEX=0x%lX DEC=%lu, Protokol Wiegand-%d\n", wcode, wcode, wtype);
 	  		HAL_UART_Transmit(&huart1, (uint8_t*)str, strlen((char*)str), 1000);
 
-	  		if(wtype == 4)
+	  		if(wtype == 4 || wtype == 8)
 	  		{
 	  			if(wcode == 0x1B) // * сброс кнопок
 	  			{
@@ -186,7 +186,7 @@ int main(void)
 	  				}
 	  			}
 	  		}
-	  		else if(wtype > 4)
+	  		else if(wtype > 8)
 	  		{
 	  			HAL_UART_Transmit(&huart1, (uint8_t*)"Cart\n", strlen("Cart\n"), 1000);
 
