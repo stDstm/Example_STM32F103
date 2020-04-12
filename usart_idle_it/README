@@ -1,1 +1,5 @@
 В файле stm32f1xx_hal_uart.c в функции HAL_UART_IRQHandler() добавлен колбек для IDLE (HAL_UART_IDLE_Callback()). Объявлен в файле stm32f1xx_hal_uart.h.
+
+
+
+[![Donate](https://istarik.ru/uploads/images/00/00/01/2020/04/12/ff1b11.png)](https://istarik.ru/don.html)

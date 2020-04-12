@@ -56,4 +56,7 @@ Maximum output speed - High
 
 ![](https://github.com/stDstm/Example_STM32F103/blob/master/ds18b20/cubemx2.png)
 
+
+[![Donate](https://istarik.ru/uploads/images/00/00/01/2020/04/12/ff1b11.png)](https://istarik.ru/don.html)
+
  

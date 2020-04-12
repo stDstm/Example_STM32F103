@@ -108,5 +108,8 @@ clear_uart_buff();
 В CubeMX настроить USART и включить прерывания.
 
 
+[![Donate](https://istarik.ru/uploads/images/00/00/01/2020/04/12/ff1b11.png)](https://istarik.ru/don.html)
+
+
 
  

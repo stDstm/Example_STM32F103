@@ -22,3 +22,6 @@ while(usart1_available())
 
 Размер буфера указать в файле usart_dma_rx_buf.h - RX_BUFFER_SIZE. Механизм в файле usart_dma_rx_buf.c
 
+
+[![Donate](https://istarik.ru/uploads/images/00/00/01/2020/04/12/ff1b11.png)](https://istarik.ru/don.html)
+

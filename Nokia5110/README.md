@@ -28,4 +28,7 @@ Github: https://github.com/Zeldax64?tab=repositories
 
 https://github.com/Zeldax64/Nokia-LCD5110-HAL
 --------------------
+
+
+[![Donate](https://istarik.ru/uploads/images/00/00/01/2020/04/12/ff1b11.png)](https://istarik.ru/don.html)
  
