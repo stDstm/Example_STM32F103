@@ -26,8 +26,6 @@ void print_bits(char *buf_bits, uint32_t dig, uint8_t num_bits)
 #endif /* PRINT_BITS_H_ */
 
 
-
-
 //////////////////////////////////////////// в main.c //////////////////////////////////////////////////
 
 // #include "print_bits.h"
