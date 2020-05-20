@@ -272,6 +272,67 @@ uint8_t W25qxx_Init(void)
 			#endif
 		break;
 
+		////////////////////////////////////////////////////////////////////////////////
+
+		case 0x3017:	//	w25x64
+			//w25qxx.ID = W25Q64;
+			w25qxx.BlockCount = 128;
+			#if (INIT_DEBUG == 1)
+			HAL_UART_Transmit(DEBUG_UART, (uint8_t*)"Chip: w25x64\n", 13, 1000);
+			#endif
+		break;
+
+		case 0x3016:	//	w25x32
+			//w25qxx.ID = W25Q32;
+			w25qxx.BlockCount = 64;
+			#if (INIT_DEBUG == 1)
+			HAL_UART_Transmit(DEBUG_UART, (uint8_t*)"Chip: w25x32\n", 13, 1000);
+			#endif
+		break;
+
+		case 0x3015:	//	w25q16
+			//w25qxx.ID = W25Q16;
+			w25qxx.BlockCount = 32;
+			#if (INIT_DEBUG == 1)
+			HAL_UART_Transmit(DEBUG_UART, (uint8_t*)"Chip: w25x16\n", 13, 1000);
+			#endif
+		break;
+
+		////////////////////////////////////////////////////////////////////////////////
+		case 0x3014:	//	w25x80
+			//w25qxx.ID = W25Q80;
+			w25qxx.BlockCount = 16;
+			#if (INIT_DEBUG == 1)
+			HAL_UART_Transmit(DEBUG_UART, (uint8_t*)"Chip: w25x80\n", 13, 1000);
+			#endif
+		break;
+
+		case 0x3013:	//	w25x40
+			//w25qxx.ID = W25Q40;
+			w25qxx.BlockCount = 8;
+			#if (INIT_DEBUG == 1)
+			HAL_UART_Transmit(DEBUG_UART, (uint8_t*)"Chip: w25x40\n", 13, 1000);
+			#endif
+		break;
+
+		case 0x3012:	//	w25x20
+			//w25qxx.ID = W25Q20;
+			w25qxx.BlockCount = 4;
+			#if (INIT_DEBUG == 1)
+			HAL_UART_Transmit(DEBUG_UART, (uint8_t*)"Chip: w25x20\n", 13, 1000);
+			#endif
+		break;
+
+		case 0x3011:	//	w25x10
+			//w25qxx.ID = W25Q10;
+			w25qxx.BlockCount = 2;
+			#if (INIT_DEBUG == 1)
+			HAL_UART_Transmit(DEBUG_UART, (uint8_t*)"Chip: w25x10\n", 13, 1000);
+			#endif
+		break;
+
+
+
 		default:
 			#if (INIT_DEBUG == 1)
 			HAL_UART_Transmit(DEBUG_UART, (uint8_t*)"Unknown ID\n", 11, 1000);
