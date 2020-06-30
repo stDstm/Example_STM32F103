@@ -10,8 +10,8 @@
 extern UART_HandleTypeDef MYUART;
 
 /////////////////// USART /////////////////////
-volatile rx_buffer_index_t rx_buffer_head = 0;
-volatile rx_buffer_index_t rx_buffer_tail = 0;
+volatile uint16_t rx_buffer_head = 0;
+volatile uint16_t rx_buffer_tail = 0;
 uint8_t rx_buffer[UART_RX_BUFFER_SIZE] = {0,};
 
 void clear_uart_buff()
@@ -27,16 +27,16 @@ uint16_t uart_available(void)
 	return ((uint16_t)(UART_RX_BUFFER_SIZE + rx_buffer_head - rx_buffer_tail)) % UART_RX_BUFFER_SIZE;
 }
 
-int16_t uart_read(void)
+uint8_t uart_read(void)
 {
 	if(rx_buffer_head == rx_buffer_tail)
 	{
-		return -1;
+		return 0;
 	}
 	else
 	{
-		unsigned char c = rx_buffer[rx_buffer_tail];
-		rx_buffer_tail = (rx_buffer_index_t)(rx_buffer_tail + 1) % UART_RX_BUFFER_SIZE;
+		uint8_t c = rx_buffer[rx_buffer_tail];
+		rx_buffer_tail = (uint16_t)(rx_buffer_tail + 1) % UART_RX_BUFFER_SIZE;
 		return c;
 	}
 }

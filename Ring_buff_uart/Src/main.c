@@ -73,7 +73,6 @@ int main(void)
   /* USER CODE BEGIN 1 */
 
   /* USER CODE END 1 */
-  
 
   /* MCU Configuration--------------------------------------------------------*/
 
@@ -96,26 +95,53 @@ int main(void)
   MX_USART1_UART_Init();
   /* USER CODE BEGIN 2 */
   __HAL_UART_ENABLE_IT(&MYUART, UART_IT_RXNE); // включить прерывания usart'a
+
+  #define SIZE_BF 32
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-	  if(uart_available()) // есть ли что-то в уарте
+	  if(uart_available()) // есть ли что-то в приёмном буфере, тогда читаем
+	  {
+		  char str[SIZE_BF] = {0,};
+		  uint8_t i = 0;
+
+		  while(uart_available())
+		  {
+			  str[i++] = uart_read(); // читаем байт
+
+			  if(i == SIZE_BF - 1)
+			  {
+				  str[i] = '\0';
+				  break;
+			  }
+
+			  //HAL_Delay(1);
+		  }
+
+		  str[i] = '\0';
+
+		  HAL_UART_Transmit(&MYUART, (uint8_t*)str, strlen(str), 100); // отправляем обратно что получили
+	  }
+
+
+	  /*if(uart_available() > 4) // если в приёмном буфере больше 4 байт, тогда читаем
 	  {
 		  char str[32] = {0,};
 		  uint8_t i = 0;
 
 		  while(uart_available())
 		  {
-			  str[i++] = uart_read(); // читаем
+			  str[i++] = uart_read(); // читаем байт
 			  if(i > 32 - 1) break;
-			  HAL_Delay(1); // пауза нужна или не нужна, в зависимости от задачи
+			  //HAL_Delay(1);
 		  }
 
-		  HAL_UART_Transmit(&MYUART, (uint8_t*)str, strlen(str), 100);
-	  }
+		  HAL_UART_Transmit(&MYUART, (uint8_t*)str, strlen(str), 100); // отправляем обратно что получили
+	  }*/
+
 
     /* USER CODE END WHILE */
 
@@ -177,7 +203,7 @@ static void MX_USART1_UART_Init(void)
 
   /* USER CODE END USART1_Init 1 */
   huart1.Instance = USART1;
-  huart1.Init.BaudRate = 57600;
+  huart1.Init.BaudRate = 115200;
   huart1.Init.WordLength = UART_WORDLENGTH_8B;
   huart1.Init.StopBits = UART_STOPBITS_1;
   huart1.Init.Parity = UART_PARITY_NONE;

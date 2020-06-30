@@ -43,8 +43,8 @@
 
 /* Private variables ---------------------------------------------------------*/
 /* USER CODE BEGIN PV */
-extern volatile rx_buffer_index_t rx_buffer_head;
-extern volatile rx_buffer_index_t rx_buffer_tail;
+extern volatile uint16_t rx_buffer_head;
+extern volatile uint16_t rx_buffer_tail;
 extern unsigned char rx_buffer[UART_RX_BUFFER_SIZE];
 /* USER CODE END PV */
 
@@ -209,7 +209,7 @@ void USART1_IRQHandler(void)
 	if((MYUART.Instance->SR & USART_SR_RXNE) != RESET)
 	{
 		uint8_t rbyte = (uint8_t)(MYUART.Instance->DR & (uint8_t)0x00FF); // читает байт из регистра
-		rx_buffer_index_t i = (uint16_t)(rx_buffer_head + 1) % UART_RX_BUFFER_SIZE;
+		uint16_t i = (uint16_t)(rx_buffer_head + 1) % UART_RX_BUFFER_SIZE;
 
 		if(i != rx_buffer_tail)
 		{
