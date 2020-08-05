@@ -78,6 +78,9 @@ void Error_Handler(void);
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
+#define INT_ALARM_Pin GPIO_PIN_4
+#define INT_ALARM_GPIO_Port GPIOA
+#define INT_ALARM_EXTI_IRQn EXTI4_IRQn
 /* USER CODE BEGIN Private defines */
 
 /* USER CODE END Private defines */

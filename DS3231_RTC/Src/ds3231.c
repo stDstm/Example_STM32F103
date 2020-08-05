@@ -8,6 +8,7 @@
 #include "main.h"
 #include "ds3231.h"
 #include "string.h"
+#include "stdio.h"
 
 extern I2C_HandleTypeDef hi2c1;
 extern UART_HandleTypeDef huart1;
@@ -158,6 +159,227 @@ float Read_temp_ds3213()
 
 	return ((((uint8_t)readBuf[0] << 8) | (uint8_t)readBuf[1]) >> 6) / 4.0;
 }
+
+//////////////////////////////////////////
+
+void setOutput(uint8_t enable)
+{
+	uint8_t reg = 0;
+	uint32_t status = HAL_I2C_Mem_Read(&hi2c1, DS3231_ADDR, REG_CON, I2C_MEMADD_SIZE_8BIT, (uint8_t*)&reg, 1, 1000);
+
+	if(status != HAL_OK)
+	{
+		char str[32] = {0,};
+		snprintf(str, 32, "HAL_I2C_Mem_Read_sOt");
+		I2C_Error(str, status);
+	}
+
+	reg &= ~(1 << 2);
+	reg |= (enable << 2);
+
+	status = HAL_I2C_Mem_Write(&hi2c1, DS3231_ADDR, REG_CON, I2C_MEMADD_SIZE_8BIT, (uint8_t*)&reg, 1, 1000);
+
+	if(status != HAL_OK)
+	{
+		char str[32] = {0,};
+		snprintf(str, 32, "HAL_I2C_Mem_Wr_sOt");
+		I2C_Error(str, status);
+	}
+}
+
+void setSQWRate(uint8_t rate)
+{
+	uint8_t reg = 0;
+	uint32_t status = HAL_I2C_Mem_Read(&hi2c1, DS3231_ADDR, REG_CON, I2C_MEMADD_SIZE_8BIT, (uint8_t*)&reg, 1, 1000);
+
+	if(status != HAL_OK)
+	{
+		char str[32] = {0,};
+		snprintf(str, 32, "HAL_I2C_Mem_Read_SQW");
+		I2C_Error(str, status);
+	}
+
+	reg &= ~(3 << 3);
+	reg |= (rate << 3);
+
+	status = HAL_I2C_Mem_Write(&hi2c1, DS3231_ADDR, REG_CON, I2C_MEMADD_SIZE_8BIT, (uint8_t*)&reg, 1, 1000);
+
+	if(status != HAL_OK)
+	{
+		char str[32] = {0,};
+		snprintf(str, 32, "HAL_I2C_Mem_Wr_SQW");
+		I2C_Error(str, status);
+	}
+}
+
+
+void enable32KHz(uint8_t enable)
+{
+	uint8_t reg = 0;
+	uint32_t status = HAL_I2C_Mem_Read(&hi2c1, DS3231_ADDR, REG_STATUS, I2C_MEMADD_SIZE_8BIT, (uint8_t*)&reg, 1, 1000);
+
+	if(status != HAL_OK)
+	{
+		char str[32] = {0,};
+		snprintf(str, 32, "HAL_I2C_Mem_Read_32k");
+		I2C_Error(str, status);
+	}
+
+	reg &= ~(1 << 3);
+	reg |= (enable << 3);
+
+	status = HAL_I2C_Mem_Write(&hi2c1, DS3231_ADDR, REG_STATUS, I2C_MEMADD_SIZE_8BIT, (uint8_t*)&reg, 1, 1000);
+
+	if(status != HAL_OK)
+	{
+		char str[32] = {0,};
+		snprintf(str, 32, "HAL_I2C_Mem_Wr_32k");
+		I2C_Error(str, status);
+	}
+}
+
+///////////////////////////////////////// ALARM 1 //////////////////////////////////////////////////
+
+void armAlarm1(uint8_t armed)
+{
+    uint8_t value;
+
+    uint32_t status = HAL_I2C_Mem_Read(&hi2c1, DS3231_ADDR, REG_CON, I2C_MEMADD_SIZE_8BIT, (uint8_t*)&value, 1, 1000);
+
+	if(status != HAL_OK)
+	{
+		char str[32] = {0,};
+		snprintf(str, 32, "HAL_I2C_Mem_Read_AL");
+		I2C_Error(str, status);
+	}
+
+    if(armed)
+    {
+        value |= 0b00000001;
+    }
+    else
+    {
+        value &= 0b11111110;
+    }
+
+    status = HAL_I2C_Mem_Write(&hi2c1, DS3231_ADDR, REG_CON, I2C_MEMADD_SIZE_8BIT, (uint8_t*)&value, 1, 1000);
+
+	if(status != HAL_OK)
+	{
+		char str[32] = {0,};
+		snprintf(str, 32, "HAL_I2C_Mem_Wr_AL");
+		I2C_Error(str, status);
+	}
+}
+
+
+void clearAlarm1(void)
+{
+    uint8_t value;
+
+    uint32_t status = HAL_I2C_Mem_Read(&hi2c1, DS3231_ADDR, REG_STATUS, I2C_MEMADD_SIZE_8BIT, (uint8_t*)&value, 1, 1000);
+
+	if(status != HAL_OK)
+	{
+		char str[32] = {0,};
+		snprintf(str, 32, "HAL_I2C_Mem_Read_CA");
+		I2C_Error(str, status);
+	}
+
+    value &= 0b11111110;
+
+    status = HAL_I2C_Mem_Write(&hi2c1, DS3231_ADDR, REG_STATUS, I2C_MEMADD_SIZE_8BIT, (uint8_t*)&value, 1, 1000);
+
+	if(status != HAL_OK)
+	{
+		char str[32] = {0,};
+		snprintf(str, 32, "HAL_I2C_Mem_Wr_CA");
+		I2C_Error(str, status);
+	}
+}
+
+
+void setAlarm1(uint8_t dydw, uint8_t hour, uint8_t minute, uint8_t second, DS3231_alarm1_t mode, uint8_t armed)
+{
+    second = dec2bcd(second);
+    minute = dec2bcd(minute);
+    hour = dec2bcd(hour);
+    dydw = dec2bcd(dydw);
+
+    switch(mode)
+    {
+        case EVERY_SECOND:
+            second |= 0b10000000;
+            minute |= 0b10000000;
+            hour |= 0b10000000;
+            dydw |= 0b10000000;
+            break;
+
+        case MATCH_S:
+            second &= 0b01111111;
+            minute |= 0b10000000;
+            hour |= 0b10000000;
+            dydw |= 0b10000000;
+            break;
+
+        case MATCH_M_S:
+            second &= 0b01111111;
+            minute &= 0b01111111;
+            hour |= 0b10000000;
+            dydw |= 0b10000000;
+            break;
+
+        case MATCH_H_M_S:
+            second &= 0b01111111;
+            minute &= 0b01111111;
+            hour &= 0b01111111;
+            dydw |= 0b10000000;
+            break;
+
+        case MATCH_DT_H_M_S:
+            second &= 0b01111111;
+            minute &= 0b01111111;
+            hour &= 0b01111111;
+            dydw &= 0b01111111;
+            break;
+
+        case MATCH_DY_H_M_S:
+            second &= 0b01111111;
+            minute &= 0b01111111;
+            hour &= 0b01111111;
+            dydw &= 0b01111111;
+            dydw |= 0b01000000;
+            break;
+    }
+
+    uint8_t data[4] = {0,};
+    data[0] = second;
+    data[1] = minute;
+    data[2] = hour;
+    data[3] = dydw;
+
+    uint32_t status = HAL_I2C_Mem_Write(&hi2c1, DS3231_ADDR, REG_ALARM_1, I2C_MEMADD_SIZE_8BIT, (uint8_t*)data, 4, 1000);
+
+	if(status != HAL_OK)
+	{
+		char str[32] = {0,};
+		snprintf(str, 32, "HAL_I2C_Mem_Wr_SA");
+		I2C_Error(str, status);
+	}
+
+    armAlarm1(armed);
+    clearAlarm1();
+}
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -37,13 +37,13 @@
   ******************************************************************************
   */
 /* USER CODE END Header */
-
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "string.h"
+#include "stdio.h"
 #include "ds3231.h"
 /* USER CODE END Includes */
 
@@ -68,7 +68,7 @@ I2C_HandleTypeDef hi2c1;
 UART_HandleTypeDef huart1;
 
 /* USER CODE BEGIN PV */
-
+volatile uint8_t flag_clear_alarm = 0;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -169,6 +169,16 @@ void I2C_Error(char *er, uint32_t status) // ошибки i2c
 	while(1){}; // после вывода ошибки программа зацикливается
 }
 
+
+void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
+{
+	if(GPIO_Pin == INT_ALARM_Pin)
+	{
+		//HAL_UART_Transmit(&huart1, (uint8_t*)"INT\n", 4, 1000);
+		//flag_clear_alarm = 1;
+	}
+
+}
 /* USER CODE END 0 */
 
 /**
@@ -202,8 +212,9 @@ int main(void)
   MX_I2C1_Init();
   MX_USART1_UART_Init();
   /* USER CODE BEGIN 2 */
-  //I2C_Scan(&hi2c1); // НОМЕР I2C
+  I2C_Scan(&hi2c1); // НОМЕР I2C
 
+  /////////////////////////////////////////////////////////////////////////////////////////////
   // устанока времени и даты ⇨ расскоментить ⇨ прошить ⇨ закомментить ⇨ прошить ⇨ пользоваться
   //setHour(22); // 0-23
   //setMinutes(23);
@@ -211,11 +222,18 @@ int main(void)
   //setDate(24);
   //setMonth(5);
   //setYear(19);
-  //setDay(19); // 1-7
+  //setDay(1); // 1-7
 
   //Set_time_data();
 
+  /////////////////////////////////////////////////////////////////////////////////////////////
+  setOutput(OUTPUT_SQW); // разрешить вовод импульсов на пин SQW. OUTPUT_SQW - импульсы соответствующие функции setSQWRate(), OUTPUT_INT - прерывания от будильника
 
+  setSQWRate(SQW_RATE_1); // 1Hz, SQW_RATE_1K - 1024Hz, SQW_RATE_4K - 4096Hz, SQW_RATE_8K - 8192Hz
+
+  enable32KHz(0); // отключить вывод частоты на пин 32К, 1 - включить. (частота с кварца часов 32768)
+
+  //setAlarm1(0, 0, 48, 20, EVERY_SECOND, 1);
 
   /* USER CODE END 2 */
 
@@ -248,6 +266,13 @@ int main(void)
 
 	  HAL_Delay(1000);
 
+	  if(flag_clear_alarm)
+	  {
+		  flag_clear_alarm = 0;
+		  clearAlarm1();
+		  armAlarm1(0);
+	  }
+
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
@@ -264,7 +289,8 @@ void SystemClock_Config(void)
   RCC_OscInitTypeDef RCC_OscInitStruct = {0};
   RCC_ClkInitTypeDef RCC_ClkInitStruct = {0};
 
-  /**Initializes the CPU, AHB and APB busses clocks 
+  /** Initializes the RCC Oscillators according to the specified parameters
+  * in the RCC_OscInitTypeDef structure.
   */
   RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSE;
   RCC_OscInitStruct.HSEState = RCC_HSE_ON;
@@ -277,7 +303,7 @@ void SystemClock_Config(void)
   {
     Error_Handler();
   }
-  /**Initializes the CPU, AHB and APB busses clocks 
+  /** Initializes the CPU, AHB and APB buses clocks
   */
   RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK|RCC_CLOCKTYPE_SYSCLK
                               |RCC_CLOCKTYPE_PCLK1|RCC_CLOCKTYPE_PCLK2;
@@ -366,11 +392,22 @@ static void MX_USART1_UART_Init(void)
   */
 static void MX_GPIO_Init(void)
 {
+  GPIO_InitTypeDef GPIO_InitStruct = {0};
 
   /* GPIO Ports Clock Enable */
   __HAL_RCC_GPIOD_CLK_ENABLE();
   __HAL_RCC_GPIOA_CLK_ENABLE();
   __HAL_RCC_GPIOB_CLK_ENABLE();
+
+  /*Configure GPIO pin : INT_ALARM_Pin */
+  GPIO_InitStruct.Pin = INT_ALARM_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_IT_FALLING;
+  GPIO_InitStruct.Pull = GPIO_PULLUP;
+  HAL_GPIO_Init(INT_ALARM_GPIO_Port, &GPIO_InitStruct);
+
+  /* EXTI interrupt init*/
+  HAL_NVIC_SetPriority(EXTI4_IRQn, 1, 0);
+  HAL_NVIC_EnableIRQ(EXTI4_IRQn);
 
 }
 
@@ -399,7 +436,7 @@ void Error_Handler(void)
   * @retval None
   */
 void assert_failed(uint8_t *file, uint32_t line)
-{ 
+{
   /* USER CODE BEGIN 6 */
   /* User can add his own implementation to report the file name and line number,
      tex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */
