@@ -7,6 +7,7 @@
 
 #include "main.h"
 #include "lcd.h"
+#include "i2c_er.h"
 
 #define DWT_CONTROL *(volatile unsigned long *)0xE0001000
 #define SCB_DEMCR *(volatile unsigned long *)0xE000EDFC
@@ -29,7 +30,22 @@ void delay_us(uint32_t us)
 
 void LCD_WriteByteI2CLCD(uint8_t bt)
 {
-	HAL_I2C_Master_Transmit(&hi2c1, (uint16_t)LCD_ADDR, &bt, 1, 1000);
+	uint32_t status = HAL_I2C_Master_Transmit(&hi2c1, (uint16_t)LCD_ADDR, &bt, 1, 1000);
+
+	if(status != HAL_OK)
+	{
+		I2C_ClearBusyFlagErratum(&hi2c1, 1000);
+	}
+
+
+	// uint32_t status = HAL_I2C_Master_Transmit(&hi2c1, (uint16_t)LCD_ADDR, &bt, 1, 1000);
+
+	/*if(status != HAL_OK)
+	{
+		char str[32] = {0,};
+		snprintf(str, 32, "HAL_I2C_Master_Transmit");
+		I2C_Error(str, status);
+	}*/
 }
 
 void sendhalfbyte(uint8_t c)

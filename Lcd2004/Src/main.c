@@ -43,8 +43,9 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include "stdio.h"
+#include "stdlib.h"
 #include "lcd.h"
-#include <stdio.h>
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -82,6 +83,78 @@ static void MX_I2C1_Init(void);
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 
+// ошибки i2c, раскомментировать блок if в функции LCD_WriteByteI2CLCD в файле lcd.c
+/*void I2C_Error(char *er, uint32_t status) // ошибки i2c
+{
+	char str[64] = {0,};
+
+	switch(status)
+	{
+		case HAL_ERROR:
+			snprintf(str, 64, "%s - HAL_ERROR\n", er);
+			HAL_UART_Transmit(&huart1, (uint8_t*)str, strlen(str), 1000);
+		break;
+
+		case HAL_BUSY:
+			snprintf(str, 64, "%s - HAL_BUSY\n", er);
+			HAL_UART_Transmit(&huart1, (uint8_t*)str, strlen(str), 1000);
+		break;
+
+		case HAL_TIMEOUT:
+			snprintf(str, 64, "%s - HAL_TIMEOUT\n", er);
+			HAL_UART_Transmit(&huart1, (uint8_t*)str, strlen(str), 1000);
+		break;
+
+		default:
+		break;
+	}
+
+	uint32_t err = HAL_I2C_GetError(&hi2c1);
+
+	switch(err)
+	{
+		case HAL_I2C_ERROR_NONE:
+			snprintf(str, 64, "HAL_I2C_ERROR_NONE\n");
+			HAL_UART_Transmit(&huart1, (uint8_t*)str, strlen(str), 1000);
+		break;
+
+		case HAL_I2C_ERROR_BERR:
+			snprintf(str, 64, "HAL_I2C_ERROR_BERR\n");
+			HAL_UART_Transmit(&huart1, (uint8_t*)str, strlen(str), 1000);
+		break;
+
+		case HAL_I2C_ERROR_ARLO:
+			snprintf(str, 64, "HAL_I2C_ERROR_ARLO\n");
+			HAL_UART_Transmit(&huart1, (uint8_t*)str, strlen(str), 1000);
+		break;
+
+		case HAL_I2C_ERROR_AF:
+			snprintf(str, 64, "HAL_I2C_ERROR_AF\n");
+			HAL_UART_Transmit(&huart1, (uint8_t*)str, strlen(str), 1000);
+		break;
+
+		case HAL_I2C_ERROR_OVR:
+			snprintf(str, 64, "HAL_I2C_ERROR_OVR\n");
+			HAL_UART_Transmit(&huart1, (uint8_t*)str, strlen(str), 1000);
+		break;
+
+		case HAL_I2C_ERROR_DMA:
+			snprintf(str, 64, "HAL_I2C_ERROR_DMA\n");
+			HAL_UART_Transmit(&huart1, (uint8_t*)str, strlen(str), 1000);
+		break;
+
+		case HAL_I2C_ERROR_TIMEOUT:
+			snprintf(str, 64, "HAL_I2C_ERROR_TIMEOUT\n");
+			HAL_UART_Transmit(&huart1, (uint8_t*)str, strlen(str), 1000);
+		break;
+
+		default:
+		break;
+	}
+
+	while(1){}; // после вывода ошибки программа зацикливается
+}*/
+
 /* USER CODE END 0 */
 
 /**
@@ -93,6 +166,7 @@ int main(void)
   /* USER CODE BEGIN 1 */
 
   /* USER CODE END 1 */
+  
 
   /* MCU Configuration--------------------------------------------------------*/
 
@@ -107,7 +181,12 @@ int main(void)
   SystemClock_Config();
 
   /* USER CODE BEGIN SysInit */
-
+  __HAL_RCC_I2C1_CLK_ENABLE();
+  HAL_Delay(100);
+  __HAL_RCC_I2C1_FORCE_RESET();
+  HAL_Delay(100);
+  __HAL_RCC_I2C1_RELEASE_RESET();
+  HAL_Delay(100);
   /* USER CODE END SysInit */
 
   /* Initialize all configured peripherals */
@@ -133,6 +212,8 @@ int main(void)
   HAL_Delay(1000);
 
   /* USER CODE END 2 */
+ 
+ 
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
@@ -164,7 +245,7 @@ void SystemClock_Config(void)
   RCC_OscInitTypeDef RCC_OscInitStruct = {0};
   RCC_ClkInitTypeDef RCC_ClkInitStruct = {0};
 
-  /**Initializes the CPU, AHB and APB busses clocks 
+  /** Initializes the CPU, AHB and APB busses clocks 
   */
   RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSE;
   RCC_OscInitStruct.HSEState = RCC_HSE_ON;
@@ -177,7 +258,7 @@ void SystemClock_Config(void)
   {
     Error_Handler();
   }
-  /**Initializes the CPU, AHB and APB busses clocks 
+  /** Initializes the CPU, AHB and APB busses clocks 
   */
   RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK|RCC_CLOCKTYPE_SYSCLK
                               |RCC_CLOCKTYPE_PCLK1|RCC_CLOCKTYPE_PCLK2;
