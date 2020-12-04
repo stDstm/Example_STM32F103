@@ -25,9 +25,9 @@ void ILI9341_Write_Command(uint8_t Command)
 {
 	DISP_DC_CMD;
 	DISP_CS_SELECT;
-	while(!(DISP_SPI->SR & SPI_SR_TXE));
 	DISP_SPI->DR = Command;
 	while(!(DISP_SPI->SR & SPI_SR_TXE));
+	while(DISP_SPI->SR & SPI_SR_BSY);
 	DISP_CS_UNSELECT;
 }
 
@@ -36,9 +36,9 @@ void ILI9341_Write_Data(uint8_t Data)
 {
 	DISP_DC_DATA;
 	DISP_CS_SELECT;
-	while(!(DISP_SPI->SR & SPI_SR_TXE));
 	DISP_SPI->DR = Data;
 	while(!(DISP_SPI->SR & SPI_SR_TXE));
+	while(DISP_SPI->SR & SPI_SR_BSY);
 	DISP_CS_UNSELECT;
 }
 
@@ -47,12 +47,12 @@ void ILI9341_Set_Address(uint16_t X1, uint16_t Y1, uint16_t X2, uint16_t Y2)
 {
 	DISP_DC_CMD;
 	DISP_CS_SELECT;
-	while(!(DISP_SPI->SR & SPI_SR_TXE));
+
 	DISP_SPI->DR = 0x2A;
 	while(!(DISP_SPI->SR & SPI_SR_TXE));
+	while(DISP_SPI->SR & SPI_SR_BSY);
 
 	DISP_DC_DATA;
-	//while(!(DISP_SPI->SR & SPI_SR_TXE));
 	DISP_SPI->DR = (uint8_t)(X1 >> 8);
 	while(!(DISP_SPI->SR & SPI_SR_TXE));
 	DISP_SPI->DR = (uint8_t)X1;
@@ -61,14 +61,14 @@ void ILI9341_Set_Address(uint16_t X1, uint16_t Y1, uint16_t X2, uint16_t Y2)
 	while(!(DISP_SPI->SR & SPI_SR_TXE));
 	DISP_SPI->DR = (uint8_t)X2;
 	while(!(DISP_SPI->SR & SPI_SR_TXE));
+	while(DISP_SPI->SR & SPI_SR_BSY);
 
 	DISP_DC_CMD;
-	//while(!(DISP_SPI->SR & SPI_SR_TXE));
 	DISP_SPI->DR = 0x2B;
 	while(!(DISP_SPI->SR & SPI_SR_TXE));
+	while(DISP_SPI->SR & SPI_SR_BSY);
 
 	DISP_DC_DATA;
-	//while(!(DISP_SPI->SR & SPI_SR_TXE));
 	DISP_SPI->DR = (uint8_t)(Y1 >> 8);
 	while(!(DISP_SPI->SR & SPI_SR_TXE));
 	DISP_SPI->DR = (uint8_t)Y1;
@@ -77,11 +77,12 @@ void ILI9341_Set_Address(uint16_t X1, uint16_t Y1, uint16_t X2, uint16_t Y2)
 	while(!(DISP_SPI->SR & SPI_SR_TXE));
 	DISP_SPI->DR = (uint8_t)Y2;
 	while(!(DISP_SPI->SR & SPI_SR_TXE));
+	while(DISP_SPI->SR & SPI_SR_BSY);
 
 	DISP_DC_CMD;
-	//while(!(DISP_SPI->SR & SPI_SR_TXE));
 	DISP_SPI->DR = 0x2C;
 	while(!(DISP_SPI->SR & SPI_SR_TXE));
+	while(DISP_SPI->SR & SPI_SR_BSY);
 	DISP_CS_UNSELECT;
 }
 
@@ -100,9 +101,9 @@ void ILI9341_Set_Rotation(uint8_t Rotation)
 {
 	DISP_DC_CMD;
 	DISP_CS_SELECT;
-	while(!(DISP_SPI->SR & SPI_SR_TXE));
 	DISP_SPI->DR = 0x36;
 	while(!(DISP_SPI->SR & SPI_SR_TXE));
+	while(DISP_SPI->SR & SPI_SR_BSY);
 	DISP_CS_UNSELECT;
 
 	switch(Rotation)
@@ -278,11 +279,11 @@ void ILI9341_Draw_Colour(uint16_t Colour)
 {
 	DISP_DC_DATA;
 	DISP_CS_SELECT;
-	while(!(DISP_SPI->SR & SPI_SR_TXE));
 	DISP_SPI->DR = (Colour >> 8);
 	while(!(DISP_SPI->SR & SPI_SR_TXE));
 	DISP_SPI->DR = Colour;
 	while(!(DISP_SPI->SR & SPI_SR_TXE));
+	while(DISP_SPI->SR & SPI_SR_BSY);
 	DISP_CS_UNSELECT;
 }
 
@@ -295,14 +296,15 @@ void ILI9341_Draw_Colour_Burst(uint16_t Colour, uint32_t Size)
 
 	while(Size > 0)
 	{
-		while(!(DISP_SPI->SR & SPI_SR_TXE));
 		DISP_SPI->DR = (Colour >> 8);
 		while(!(DISP_SPI->SR & SPI_SR_TXE));
 		DISP_SPI->DR = Colour;
+		while(!(DISP_SPI->SR & SPI_SR_TXE));
 		Size--;
 	}
 
 	while(!(DISP_SPI->SR & SPI_SR_TXE));
+	while(DISP_SPI->SR & SPI_SR_BSY);
 	DISP_CS_UNSELECT;
 }
 
@@ -324,12 +326,11 @@ void ILI9341_Draw_Pixel(uint16_t X, uint16_t Y, uint16_t Colour)
 	//ADDRESS
 	DISP_DC_CMD;
 	DISP_CS_SELECT;
-	while(!(DISP_SPI->SR & SPI_SR_TXE));
 	DISP_SPI->DR = 0x2A;
 	while(!(DISP_SPI->SR & SPI_SR_TXE));
+	while(DISP_SPI->SR & SPI_SR_BSY);////////////
 
 	DISP_DC_DATA;
-	//while(!(DISP_SPI->SR & SPI_SR_TXE));
 	DISP_SPI->DR = (X >> 8);
 	while(!(DISP_SPI->SR & SPI_SR_TXE));
 	DISP_SPI->DR = X;
@@ -338,15 +339,15 @@ void ILI9341_Draw_Pixel(uint16_t X, uint16_t Y, uint16_t Colour)
 	while(!(DISP_SPI->SR & SPI_SR_TXE));
 	DISP_SPI->DR = (X + 1);
 	while(!(DISP_SPI->SR & SPI_SR_TXE));
+	while(DISP_SPI->SR & SPI_SR_BSY);
 
 	//ADDRESS
 	DISP_DC_CMD;
-	//while(!(DISP_SPI->SR & SPI_SR_TXE));
 	DISP_SPI->DR = 0x2B;
 	while(!(DISP_SPI->SR & SPI_SR_TXE));
+	while(DISP_SPI->SR & SPI_SR_BSY);
 
 	DISP_DC_DATA;
-	//while(!(DISP_SPI->SR & SPI_SR_TXE));
 	DISP_SPI->DR = (Y >> 8);
 	while(!(DISP_SPI->SR & SPI_SR_TXE));
 	DISP_SPI->DR = Y;
@@ -355,20 +356,21 @@ void ILI9341_Draw_Pixel(uint16_t X, uint16_t Y, uint16_t Colour)
 	while(!(DISP_SPI->SR & SPI_SR_TXE));
 	DISP_SPI->DR = (Y + 1);
 	while(!(DISP_SPI->SR & SPI_SR_TXE));
+	while(DISP_SPI->SR & SPI_SR_BSY);
 
 	//ADDRESS
 	DISP_DC_CMD;
-	//while(!(DISP_SPI->SR & SPI_SR_TXE));
 	DISP_SPI->DR = 0x2C;
 	while(!(DISP_SPI->SR & SPI_SR_TXE));
+	while(DISP_SPI->SR & SPI_SR_BSY);
 
 	DISP_DC_DATA;
-	//while(!(DISP_SPI->SR & SPI_SR_TXE));
 	DISP_SPI->DR = (Colour >> 8);
 	while(!(DISP_SPI->SR & SPI_SR_TXE));
 	DISP_SPI->DR = Colour;
 	while(!(DISP_SPI->SR & SPI_SR_TXE));
-	
+	while(DISP_SPI->SR & SPI_SR_BSY);
+
 	DISP_CS_UNSELECT;
 }
 
@@ -642,7 +644,7 @@ void ILI9341_Random_line(int16_t x1, int16_t y1, int16_t x2, int16_t y2, uint16_
 	}
 }
 
-
+/////////////////////////////////////// Картинка из массива ///////////////////////////////////////////////////
 void ILI9341_Draw_Image(const char *image_array, uint16_t x_coordinat, uint16_t y_coordinat, uint16_t img_width, uint16_t img_height, uint32_t s_img)
 {
 	ILI9341_Set_Address(x_coordinat, y_coordinat, img_width + x_coordinat - 1, img_height + y_coordinat - 1);
@@ -652,11 +654,12 @@ void ILI9341_Draw_Image(const char *image_array, uint16_t x_coordinat, uint16_t 
 
 	for(uint32_t i = 0; i < s_img; i++)
 	{
-		while(!(DISP_SPI->SR & SPI_SR_TXE));
 		DISP_SPI->DR = image_array[i];
+		while(!(DISP_SPI->SR & SPI_SR_TXE));
 	}
 
 	while(!(DISP_SPI->SR & SPI_SR_TXE));
+	while(DISP_SPI->SR & SPI_SR_BSY);
 	DISP_CS_UNSELECT;
 }
 
