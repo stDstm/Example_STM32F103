@@ -4,7 +4,7 @@
 
 Starting in 2021, all examples will be done in CubeIDE. The comment will be marked "CubeIDE".
 
-
+----
 
 Примеры для МК STM32F103 сделаные в CubeMX и Atollic TrueStudio (HAL)
 
