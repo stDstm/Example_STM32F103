@@ -4,7 +4,7 @@
 
 Starting in 2021, all examples will be done in CubeIDE. The comment will be marked "CubeIDE".
 
-----
+-----
 
 До 2021 года все примеры сделаны в CubeMX и Atollic TrueStudio (HAL)
 
