@@ -3,7 +3,7 @@
 
 Начиная с 2021 все примеры будут делаться в CubeIDE.
 
-Starting in 2021, all examples will be done in CubeIDE.
+Starting in 2021, all examples will be done in CubeIDE. 
 
 -----
 
