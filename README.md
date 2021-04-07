@@ -1,9 +1,9 @@
 # Example_STM32F103
 
 
-Начиная с 2021 все примеры будут делаться в CubeIDE. В комментарии будет пометка "CubeIDE".
+Начиная с 2021 все примеры будут делаться в CubeIDE.
 
-Starting in 2021, all examples will be done in CubeIDE. The comment will be marked "CubeIDE".
+Starting in 2021, all examples will be done in CubeIDE.
 
 -----
 
