@@ -1,0 +1,4 @@
+main.c:70:6:step	20	static
+main.c:147:6:SystemClock_Config	72	static,ignoring_inline_asm
+main.c:87:5:main	40	static
+main.c:235:6:Error_Handler	0	static,ignoring_inline_asm

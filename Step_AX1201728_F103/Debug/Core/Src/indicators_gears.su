@@ -1,0 +1,6 @@
+delay_micros.h:23:22:delay_us	0	static
+indicators_gears.c:28:6:step_gears	16	static
+indicators_gears.c:40:6:step_sport	0	static
+indicators_gears.c:52:6:init_ax1201728	16	static
+indicators_gears.c:82:6:check_positions	8	static
+indicators_gears.c:122:6:fdfdfdfdf	0	static
