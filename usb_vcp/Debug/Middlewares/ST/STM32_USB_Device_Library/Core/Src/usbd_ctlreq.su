@@ -1,7 +1,0 @@
-usbd_ctlreq.c:716:6:USBD_CtlError.constprop	8	static
-usbd_ctlreq.c:119:21:USBD_StdDevReq	24	static
-usbd_ctlreq.c:170:21:USBD_StdItfReq	16	static
-usbd_ctlreq.c:207:21:USBD_StdEPReq	16	static
-usbd_ctlreq.c:698:6:USBD_ParseSetupRequest	0	static
-usbd_ctlreq.c:716:6:USBD_CtlError	8	static
-usbd_ctlreq.c:732:6:USBD_GetString	12	static

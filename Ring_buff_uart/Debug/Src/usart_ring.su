@@ -1,3 +1,0 @@
-usart_ring.c:17:6:clear_uart_buff	0	static
-usart_ring.c:25:10:uart_available	0	static
-usart_ring.c:30:9:uart_read	0	static

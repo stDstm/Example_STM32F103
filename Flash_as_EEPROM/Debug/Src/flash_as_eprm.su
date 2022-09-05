@@ -1,4 +1,0 @@
-flash_as_eprm.c:16:6:erase_flash	88	static
-flash_as_eprm.c:46:10:flash_search_adress	8	static
-flash_as_eprm.c:126:6:read_last_data_in_flash	0	static
-flash_as_eprm.c:69:6:write_to_flash	128	static

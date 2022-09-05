@@ -1,7 +1,0 @@
-wiegand.c:19:10:getCode	0	static
-wiegand.c:24:9:getWiegandType	0	static
-wiegand.c:45:6:ReadD0	8	static
-wiegand.c:63:6:ReadD1	8	static
-wiegand.c:83:10:GetCardId	0	static
-wiegand.c:102:9:translateEnterEscapeKeyPress	0	static
-wiegand.c:117:9:wig_available	24	static

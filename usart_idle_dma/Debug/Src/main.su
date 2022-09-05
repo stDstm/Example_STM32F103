@@ -1,6 +1,0 @@
-main.c:91:6:HAL_UART_IDLE_Callback	16	static
-main.c:109:6:HAL_UART_RxCpltCallback	16	static
-main.c:168:6:HAL_UART_ErrorCallback	24	static
-main.c:268:6:SystemClock_Config	72	static
-main.c:220:5:main	40	static
-main.c:386:6:Error_Handler	0	static

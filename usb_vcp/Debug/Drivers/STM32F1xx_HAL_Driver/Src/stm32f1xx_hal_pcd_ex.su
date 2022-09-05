@@ -1,2 +1,0 @@
-stm32f1xx_hal_pcd_ex.c:163:20:HAL_PCDEx_PMAConfig	0	static
-stm32f1xx_hal_pcd_ex.c:217:13:HAL_PCDEx_SetConnectionState	0	static

@@ -1,4 +1,0 @@
-main.c:65:6:HAL_GPIO_EXTI_Callback	0	static
-main.c:206:6:SystemClock_Config	72	static
-main.c:82:5:main	112	static
-main.c:306:6:Error_Handler	0	static
